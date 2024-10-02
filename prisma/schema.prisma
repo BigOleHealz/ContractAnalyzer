@@ -52,7 +52,7 @@ model User {
   name              String?
   email             String?            @unique()
   pictureurl        String?            @default("https://i.imgur.com/ZdJSK3Y.jpeg")
-  tokeninvitation   String?
+  tokenInvitation   String?
   emailVerified     Boolean?
   stripeCustomerId  String?
   status            UserStatus         @default(VERIFIED)
