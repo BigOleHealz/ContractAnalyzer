@@ -49,7 +49,7 @@ export const Topbar: React.FC<Props> = ({ keySelected, items }) => {
 
           {user && (
             <Avatar
-              src={user.pictureUrl}
+              src={user.pictureurl}
               alt={user.name}
               size="default"
               onClick={() => router.push('/profile')}

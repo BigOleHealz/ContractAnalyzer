@@ -1,19 +1,11 @@
 'use client'
 
-import { Typography, Button, Space, Card, Row, Col } from 'antd'
-import {
-  UploadOutlined,
-  FileTextOutlined,
-  InfoCircleOutlined,
-} from '@ant-design/icons'
-const { Title, Paragraph } = Typography
 import { useUserContext } from '@/core/context'
-import { useRouter, useParams } from 'next/navigation'
-import { useUploadPublic } from '@/core/hooks/upload'
-import { useSnackbar } from 'notistack'
-import dayjs from 'dayjs'
-import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
+import { Space, Typography } from 'antd'
+import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
+const { Title, Paragraph } = Typography
 
 export default function HomePage() {
   const router = useRouter()
@@ -32,7 +24,7 @@ export default function HomePage() {
           Welcome to our Contract Analysis Service. This powerful tool helps you
           understand and evaluate your contracts quickly and efficiently.
         </Paragraph>
-
+{/* 
         <Card>
           <Space direction="vertical" size="middle" style={{ width: '100%' }}>
             <Title level={4}>Service Overview</Title>
@@ -51,10 +43,10 @@ export default function HomePage() {
               replacement for professional legal advice.
             </Paragraph>
           </Space>
-        </Card>
+        </Card> */}
 
-        <Title level={4}>Start Your Analysis</Title>
-        <Row gutter={[16, 16]}>
+        {/* <Title level={4}>Start Your Analysis</Title> */}
+        {/* <Row gutter={[16, 16]}>
           <Col xs={24} sm={12}>
             <Card
               hoverable
@@ -89,7 +81,7 @@ export default function HomePage() {
               </Space>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </Space>
     </PageLayout>
   )

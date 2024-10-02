@@ -39,7 +39,7 @@ export default function ProfilePage() {
         data: {
           email: values.email,
           name: values.name,
-          pictureUrl: values.pictureUrl,
+          pictureurl: values.pictureurl,
         },
       })
 
@@ -77,7 +77,7 @@ export default function ProfilePage() {
       </Flex>
 
       <Flex justify="center" style={{ marginBottom: '30px' }}>
-        <Avatar size={80} src={user.pictureUrl}>
+        <Avatar size={80} src={user.pictureurl}>
           {Utility.stringToInitials(user.name)}
         </Avatar>
       </Flex>
@@ -105,7 +105,7 @@ export default function ProfilePage() {
           <Input type="email" placeholder="Your email" autoComplete="email" />
         </Form.Item>
 
-        <Form.Item label="Profile picture" name="pictureUrl">
+        <Form.Item label="Profile picture" name="pictureurl">
           <Input />
         </Form.Item>
 

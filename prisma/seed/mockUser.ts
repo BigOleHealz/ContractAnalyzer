@@ -13,7 +13,7 @@ INSERT INTO "User" (
   "email", 
   "name", 
   "globalRole",
-  "pictureUrl", 
+  "pictureurl", 
 
 "password"
 ) VALUES (

@@ -6,7 +6,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
   title: string
   subtitle: string
   buttonText: string
-  pictureUrl?: string
+  pictureurl?: string
   socialProof?: ReactNode
 }
 
@@ -14,7 +14,7 @@ export const LandingHero: React.FC<Props> = ({
   title,
   subtitle,
   buttonText,
-  pictureUrl,
+  pictureurl,
   socialProof = '',
   className,
   ...props
@@ -47,7 +47,7 @@ export const LandingHero: React.FC<Props> = ({
 
         <div className="lg:absolute right-0 top-0 w-4/5 lg:w-1/2 h-full">
           <img
-            src={pictureUrl}
+            src={pictureurl}
             className="mask-stripes object-cover w-full h-full"
             alt="Landing cover image"
           />

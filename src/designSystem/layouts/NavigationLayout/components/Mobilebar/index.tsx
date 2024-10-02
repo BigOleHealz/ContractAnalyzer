@@ -30,7 +30,7 @@ export const Mobilebar: React.FC<Props> = ({ keySelected, items }) => {
           {user && (
             <Flex>
               <Avatar
-                src={user.pictureUrl}
+                src={user.pictureurl}
                 alt={user.name}
                 size="small"
                 onClick={() => router.push('/profile')}
