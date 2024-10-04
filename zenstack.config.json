@@ -1,4 +1,9 @@
 {
   "output": "./src/.zenstack",
-  "schema": "./models/schema.zmodel"
+  "schema": "./models/schema.zmodel",
+  "plugins": {
+    "prisma": {},
+    "zod": {},
+    "trpc": {}
+  }
 }
