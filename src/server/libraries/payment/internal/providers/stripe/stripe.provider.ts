@@ -123,7 +123,7 @@ export class StripeProvider implements Provider {
       }
 
       if (Utility.isDefined(price?.unit_amount)) {
-        product.price = price.unit_amount / 100 ?? 0
+        product.price = price.unit_amount / 100
         product.currency = price.currency
       }
 

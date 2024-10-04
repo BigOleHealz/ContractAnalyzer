@@ -1,0 +1,4 @@
+{
+  "output": "./src/.zenstack",
+  "schema": "./models/schema.zmodel"
+}
