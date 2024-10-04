@@ -9,4 +9,5 @@ docker rm $(docker ps -aq)
 # Remove all images
 docker rmi $(docker images -q)
 
+pnpm run database:migration:generate
 pnpm run init

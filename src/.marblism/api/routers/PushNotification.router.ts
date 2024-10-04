@@ -11,17 +11,17 @@ import type { AnyRouter } from '@trpc/server';
 export default function createRouter<Config extends BaseConfig>(router: RouterFactory<Config>, procedure: ProcBuilder<Config>) {
     return router({
 
-        createMany: procedure.input($Schema.PushNotificationInputSchema.createMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.createMany(input as any))),
+        createMany: procedure.input($Schema.PushNotificationInputSchema.createMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.createMany(input as any))),
 
         create: procedure.input($Schema.PushNotificationInputSchema.create).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.create(input as any))),
 
-        deleteMany: procedure.input($Schema.PushNotificationInputSchema.deleteMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.deleteMany(input as any))),
+        deleteMany: procedure.input($Schema.PushNotificationInputSchema.deleteMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.deleteMany(input as any))),
 
         delete: procedure.input($Schema.PushNotificationInputSchema.delete).mutation(async ({ ctx, input }) => checkMutate(db(ctx).pushNotification.delete(input as any))),
 
-        findFirst: procedure.input($Schema.PushNotificationInputSchema.findFirst).query(({ ctx, input }) => checkRead(db(ctx).pushNotification.findFirst(input as any))),
+        findFirst: procedure.input($Schema.PushNotificationInputSchema.findFirst.optional()).query(({ ctx, input }) => checkRead(db(ctx).pushNotification.findFirst(input as any))),
 
-        findMany: procedure.input($Schema.PushNotificationInputSchema.findMany).query(({ ctx, input }) => checkRead(db(ctx).pushNotification.findMany(input as any))),
+        findMany: procedure.input($Schema.PushNotificationInputSchema.findMany.optional()).query(({ ctx, input }) => checkRead(db(ctx).pushNotification.findMany(input as any))),
 
         findUnique: procedure.input($Schema.PushNotificationInputSchema.findUnique).query(({ ctx, input }) => checkRead(db(ctx).pushNotification.findUnique(input as any))),
 
@@ -93,14 +93,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findFirst: {
 
         useQuery: <T extends Prisma.PushNotificationFindFirstArgs, TData = Prisma.PushNotificationGetPayload<T>>(
-            input: Prisma.SelectSubset<T, Prisma.PushNotificationFindFirstArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.PushNotificationFindFirstArgs>,
             opts?: UseTRPCQueryOptions<string, T, Prisma.PushNotificationGetPayload<T>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.PushNotificationFindFirstArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.PushNotificationFindFirstArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.PushNotificationFindFirstArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Prisma.PushNotificationGetPayload<T>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Prisma.PushNotificationGetPayload<T>,
@@ -111,14 +111,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findMany: {
 
         useQuery: <T extends Prisma.PushNotificationFindManyArgs, TData = Array<Prisma.PushNotificationGetPayload<T>>>(
-            input: Prisma.SelectSubset<T, Prisma.PushNotificationFindManyArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.PushNotificationFindManyArgs>,
             opts?: UseTRPCQueryOptions<string, T, Array<Prisma.PushNotificationGetPayload<T>>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.PushNotificationFindManyArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.PushNotificationFindManyArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.PushNotificationFindManyArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Array<Prisma.PushNotificationGetPayload<T>>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Array<Prisma.PushNotificationGetPayload<T>>,

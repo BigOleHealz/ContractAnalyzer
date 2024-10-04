@@ -11,17 +11,17 @@ import type { AnyRouter } from '@trpc/server';
 export default function createRouter<Config extends BaseConfig>(router: RouterFactory<Config>, procedure: ProcBuilder<Config>) {
     return router({
 
-        createMany: procedure.input($Schema.ContractInputSchema.createMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.createMany(input as any))),
+        createMany: procedure.input($Schema.ContractInputSchema.createMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.createMany(input as any))),
 
         create: procedure.input($Schema.ContractInputSchema.create).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.create(input as any))),
 
-        deleteMany: procedure.input($Schema.ContractInputSchema.deleteMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.deleteMany(input as any))),
+        deleteMany: procedure.input($Schema.ContractInputSchema.deleteMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.deleteMany(input as any))),
 
         delete: procedure.input($Schema.ContractInputSchema.delete).mutation(async ({ ctx, input }) => checkMutate(db(ctx).contract.delete(input as any))),
 
-        findFirst: procedure.input($Schema.ContractInputSchema.findFirst).query(({ ctx, input }) => checkRead(db(ctx).contract.findFirst(input as any))),
+        findFirst: procedure.input($Schema.ContractInputSchema.findFirst.optional()).query(({ ctx, input }) => checkRead(db(ctx).contract.findFirst(input as any))),
 
-        findMany: procedure.input($Schema.ContractInputSchema.findMany).query(({ ctx, input }) => checkRead(db(ctx).contract.findMany(input as any))),
+        findMany: procedure.input($Schema.ContractInputSchema.findMany.optional()).query(({ ctx, input }) => checkRead(db(ctx).contract.findMany(input as any))),
 
         findUnique: procedure.input($Schema.ContractInputSchema.findUnique).query(({ ctx, input }) => checkRead(db(ctx).contract.findUnique(input as any))),
 
@@ -93,14 +93,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findFirst: {
 
         useQuery: <T extends Prisma.ContractFindFirstArgs, TData = Prisma.ContractGetPayload<T>>(
-            input: Prisma.SelectSubset<T, Prisma.ContractFindFirstArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.ContractFindFirstArgs>,
             opts?: UseTRPCQueryOptions<string, T, Prisma.ContractGetPayload<T>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.ContractFindFirstArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.ContractFindFirstArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.ContractFindFirstArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Prisma.ContractGetPayload<T>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Prisma.ContractGetPayload<T>,
@@ -111,14 +111,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findMany: {
 
         useQuery: <T extends Prisma.ContractFindManyArgs, TData = Array<Prisma.ContractGetPayload<T>>>(
-            input: Prisma.SelectSubset<T, Prisma.ContractFindManyArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.ContractFindManyArgs>,
             opts?: UseTRPCQueryOptions<string, T, Array<Prisma.ContractGetPayload<T>>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.ContractFindManyArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.ContractFindManyArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.ContractFindManyArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Array<Prisma.ContractGetPayload<T>>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Array<Prisma.ContractGetPayload<T>>,

@@ -11,17 +11,17 @@ import type { AnyRouter } from '@trpc/server';
 export default function createRouter<Config extends BaseConfig>(router: RouterFactory<Config>, procedure: ProcBuilder<Config>) {
     return router({
 
-        createMany: procedure.input($Schema.AccountInputSchema.createMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.createMany(input as any))),
+        createMany: procedure.input($Schema.AccountInputSchema.createMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.createMany(input as any))),
 
         create: procedure.input($Schema.AccountInputSchema.create).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.create(input as any))),
 
-        deleteMany: procedure.input($Schema.AccountInputSchema.deleteMany).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.deleteMany(input as any))),
+        deleteMany: procedure.input($Schema.AccountInputSchema.deleteMany.optional()).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.deleteMany(input as any))),
 
         delete: procedure.input($Schema.AccountInputSchema.delete).mutation(async ({ ctx, input }) => checkMutate(db(ctx).account.delete(input as any))),
 
-        findFirst: procedure.input($Schema.AccountInputSchema.findFirst).query(({ ctx, input }) => checkRead(db(ctx).account.findFirst(input as any))),
+        findFirst: procedure.input($Schema.AccountInputSchema.findFirst.optional()).query(({ ctx, input }) => checkRead(db(ctx).account.findFirst(input as any))),
 
-        findMany: procedure.input($Schema.AccountInputSchema.findMany).query(({ ctx, input }) => checkRead(db(ctx).account.findMany(input as any))),
+        findMany: procedure.input($Schema.AccountInputSchema.findMany.optional()).query(({ ctx, input }) => checkRead(db(ctx).account.findMany(input as any))),
 
         findUnique: procedure.input($Schema.AccountInputSchema.findUnique).query(({ ctx, input }) => checkRead(db(ctx).account.findUnique(input as any))),
 
@@ -93,14 +93,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findFirst: {
 
         useQuery: <T extends Prisma.AccountFindFirstArgs, TData = Prisma.AccountGetPayload<T>>(
-            input: Prisma.SelectSubset<T, Prisma.AccountFindFirstArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.AccountFindFirstArgs>,
             opts?: UseTRPCQueryOptions<string, T, Prisma.AccountGetPayload<T>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.AccountFindFirstArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.AccountFindFirstArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.AccountFindFirstArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Prisma.AccountGetPayload<T>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Prisma.AccountGetPayload<T>,
@@ -111,14 +111,14 @@ export interface ClientType<AppRouter extends AnyRouter, Context = AppRouter['_d
     findMany: {
 
         useQuery: <T extends Prisma.AccountFindManyArgs, TData = Array<Prisma.AccountGetPayload<T>>>(
-            input: Prisma.SelectSubset<T, Prisma.AccountFindManyArgs>,
+            input?: Prisma.SelectSubset<T, Prisma.AccountFindManyArgs>,
             opts?: UseTRPCQueryOptions<string, T, Array<Prisma.AccountGetPayload<T>>, TData, Error>
         ) => UseTRPCQueryResult<
             TData,
             TRPCClientErrorLike<AppRouter>
         >;
         useInfiniteQuery: <T extends Prisma.AccountFindManyArgs>(
-            input: Omit<Prisma.SelectSubset<T, Prisma.AccountFindManyArgs>, 'cursor'>,
+            input?: Omit<Prisma.SelectSubset<T, Prisma.AccountFindManyArgs>, 'cursor'>,
             opts?: UseTRPCInfiniteQueryOptions<string, T, Array<Prisma.AccountGetPayload<T>>, Error>
         ) => UseTRPCInfiniteQueryResult<
             Array<Prisma.AccountGetPayload<T>>,
