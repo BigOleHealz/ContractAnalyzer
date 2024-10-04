@@ -1,0 +1,11 @@
+/* eslint-disable */
+import { z } from 'zod';
+
+
+import type { Prisma } from '@prisma/client';
+
+type SchemaType = z.ZodType<Prisma.NullableBoolFieldUpdateOperationsInput>;
+export const NullableBoolFieldUpdateOperationsInputObjectSchema: SchemaType = z.object({
+    set: z.union([z.boolean(),
+    z.null()]).optional().nullable()
+}).strict() as SchemaType;

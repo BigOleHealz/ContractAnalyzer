@@ -1,0 +1,10 @@
+/* eslint-disable */
+import { z } from 'zod';
+import { UserStatusSchema } from '../enums/UserStatus.schema';
+
+import type { Prisma } from '@prisma/client';
+
+type SchemaType = z.ZodType<Prisma.EnumUserStatusFieldUpdateOperationsInput>;
+export const EnumUserStatusFieldUpdateOperationsInputObjectSchema: SchemaType = z.object({
+    set: z.lazy(() => UserStatusSchema).optional()
+}).strict() as SchemaType;

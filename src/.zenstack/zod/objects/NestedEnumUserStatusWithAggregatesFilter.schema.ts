@@ -1,0 +1,13 @@
+/* eslint-disable */
+import { z } from 'zod';
+import { UserStatusSchema } from '../enums/UserStatus.schema';
+import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
+import { NestedEnumUserStatusFilterObjectSchema } from './NestedEnumUserStatusFilter.schema';
+
+import type { Prisma } from '@prisma/client';
+
+type SchemaType = z.ZodType<Prisma.NestedEnumUserStatusWithAggregatesFilter>;
+export const NestedEnumUserStatusWithAggregatesFilterObjectSchema: SchemaType = z.object({
+    equals: z.lazy(() => UserStatusSchema).optional(), in: z.lazy(() => UserStatusSchema).array().optional(), notIn: z.lazy(() => UserStatusSchema).array().optional(), not: z.union([z.lazy(() => UserStatusSchema),
+    z.lazy(() => NestedEnumUserStatusWithAggregatesFilterObjectSchema)]).optional(), _count: z.lazy(() => NestedIntFilterObjectSchema).optional(), _min: z.lazy(() => NestedEnumUserStatusFilterObjectSchema).optional(), _max: z.lazy(() => NestedEnumUserStatusFilterObjectSchema).optional()
+}).strict() as SchemaType;

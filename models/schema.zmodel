@@ -25,3 +25,8 @@ plugin trpc {
     generateClientHelpers = ['react']
     generateModelActions = ['create', 'update', 'delete', 'findMany', 'findFirst', 'findUnique', 'createMany', 'updateMany', 'deleteMany']
 }
+
+plugin zod {
+    provider = '@core/zod'
+    output = "../src/.zenstack/zod"
+}
