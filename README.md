@@ -1,3 +1,9 @@
+# Project Title
+
+## Usage
+
+### Programmatic Issue Creation
+Refer to `documentation/issue_management.md` for details on how to create issues programmatically using the provided script.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
