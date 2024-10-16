@@ -1,0 +1,28 @@
+name: Test Issue Creation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-test-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+
+    - name: Create Test Issue
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: node scripts/create_test_issue.js "Automated Test Issue" "This issue was created automatically by the CI/CD pipeline." "test"
