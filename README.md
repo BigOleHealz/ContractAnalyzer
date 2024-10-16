@@ -1,3 +1,13 @@
+# Issue Creation Script
+
+This project includes a script to create GitHub issues programmatically.
+
+## Setup
+
+1. Copy `.env.template` to `.env` and fill in your GitHub credentials.
+2. Run the script using Node.js.
+
+```bash
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
