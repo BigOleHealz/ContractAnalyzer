@@ -3,6 +3,7 @@
     /* Base Options: */
     "esModuleInterop": true,
     "target": "ES2016",
+    "esModuleInterop": true,
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
