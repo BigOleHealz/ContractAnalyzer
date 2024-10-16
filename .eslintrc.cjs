@@ -3,6 +3,7 @@ module.exports = {
   plugins: ['@marblism'],
   rules: {
     'react-hooks/exhaustive-deps': 'off',
+    "node": true,
     'react/jsx-key': 'warn',
     '@next/next/no-img-element': 'off',
     '@marblism/no-react-query-in-functions': 'error',
