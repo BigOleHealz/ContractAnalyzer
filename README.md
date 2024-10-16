@@ -1,3 +1,23 @@
+# Create Issue Script
+
+This script allows you to programmatically create issues in the GitHub repository using Node.js and the GitHub API.
+
+## Setup
+
+1. **Clone the repository** and navigate to the project directory.
+
+2. **Install dependencies**:
+   ```bash
+   npm install axios dotenv
+   ```
+
+3. **Set up environment variables**:
+   - Create a `.env` file in the root of your project.
+   - Add your GitHub Personal Access Token:
+     ```
+     GITHUB_TOKEN=your_personal_access_token
+     ```
+
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
