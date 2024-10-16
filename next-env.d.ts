@@ -1,3 +1,6 @@
+/// <reference types="node" />
+/// <reference types="dotenv" />
+/// <reference types="axios" />
 /// <reference types="next" />
 /// <reference types="next/image-types/global" />
 
