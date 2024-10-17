@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { StarFilled, StarOutlined } from '@ant-design/icons'
 import clsx from 'clsx'
 
