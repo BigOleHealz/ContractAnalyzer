@@ -1,3 +1,10 @@
+# Project Name
+
+## Running Tests
+
+To run tests, use the following command:
+
+```
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
