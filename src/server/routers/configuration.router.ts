@@ -1,4 +1,5 @@
 import { Trpc } from '@/core/trpc/server'
+// Configuration router updated for new feature
 
 export const ConfigurationRouter = Trpc.createRouter({
   getPublic: Trpc.procedurePublic.query(async () => {
