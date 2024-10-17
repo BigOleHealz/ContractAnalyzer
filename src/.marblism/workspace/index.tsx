@@ -1,4 +1,5 @@
 import { Api } from '@/core/trpc'
+// Workspace configuration updated for new feature
 import React, { ReactNode } from 'react'
 import { useMessageReceived, useMessageSend } from './hooks'
 
