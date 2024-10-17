@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+// Test feature environment setup
 
 const templatePath = '.env.template'
 const envPath = '.env'
