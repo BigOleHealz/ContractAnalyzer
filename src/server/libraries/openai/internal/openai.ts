@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { ReadStream } from 'fs'
 import OpenaiSDK from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod'
