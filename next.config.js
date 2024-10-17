@@ -1,4 +1,5 @@
 
+// Test feature integration
 import withPWA from 'next-pwa'
 
 /**
