@@ -1,4 +1,5 @@
 import { Configuration } from '@/core/configuration'
+// Billing router updated for new feature
 import { Trpc } from '@/core/trpc/server'
 import { User } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
