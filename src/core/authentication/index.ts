@@ -1,4 +1,5 @@
 import { RegistrationService } from '@/server/libraries/registration'
+// Authentication configuration updated for new feature
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { PrismaClient } from '@prisma/client'
 import * as Bcrypt from 'bcryptjs'
