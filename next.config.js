@@ -1,5 +1,6 @@
 
 import withPWA from 'next-pwa'
+// Updated configuration for new feature
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
