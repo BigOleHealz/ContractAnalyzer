@@ -1,3 +1,39 @@
+type FeatureType = {
+  heading: string
+  description: string | any
+  icon: JSX.Element
+}
+
+type Props = {
+  title: string
+  subtitle: string
+  features: FeatureType[]
+}
+
+export const LandingFeatures: React.FC<Props> = ({
+  title,
+  subtitle,
+  features,
+}) => {
+  return (
+    <section className="py-12">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold mb-4">{title}</h2>
+        <p className="text-lg text-gray-600 mb-8">{subtitle}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="text-center">
+              <div className="text-5xl mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{feature.heading}</h3>
+              <p className="text-gray-500">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+export default LandingFeatures
 import { HTMLAttributes } from 'react'
 import { DesignSystemUtility } from '../helpers/utility'
 
