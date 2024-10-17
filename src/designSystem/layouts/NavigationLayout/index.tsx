@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { useUserContext } from '@/core/context'
 import { Flex } from 'antd'
 import { useParams, usePathname, useRouter } from 'next/navigation'
