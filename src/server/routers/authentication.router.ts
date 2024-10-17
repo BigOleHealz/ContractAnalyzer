@@ -1,4 +1,5 @@
 import { Configuration } from '@/core/configuration'
+// Authentication router updated for new feature
 import { Utility } from '@/core/helpers/utility'
 import { Trpc } from '@/core/trpc/server'
 import { User } from '@prisma/client'
