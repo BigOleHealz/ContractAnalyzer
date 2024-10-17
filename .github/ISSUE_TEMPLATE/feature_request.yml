@@ -1,4 +1,5 @@
 name: Feature Request
+# Updated to include new feature details
 description: Share your problem and suggest a new feature
 title: "Feature Request: "
 labels: ["enhancement", "gitauto"]
