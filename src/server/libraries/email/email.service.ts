@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { MailjetProvider } from './providers/mailjet/mailjet.provider'
 import { NodemailerProvider } from './providers/nodemailer/nodemailer.provider'
 import { Provider } from './providers/provider'
