@@ -1,9 +1,15 @@
 {
+  "devDependencies": {
   "engines": {
+    "jest": "^27.0.0"
   "node": "20.x"
+  },
 },
+  "scripts": {
   "name": "@marblism/nextjs",
+    "test": "jest"
   "version": "1.0.5",
+  }
   "private": true,
   "type": "module",
   "scripts": {
