@@ -1,4 +1,5 @@
 import { Configuration } from '@/core/configuration'
+// Database configuration updated for new feature
 import { PrismaClient } from '@prisma/client'
 
 const createPrismaClient = () => {
