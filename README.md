@@ -8,6 +8,8 @@
 
 <a  style="margin: 0;" target="_blank" href="https://marblism.com">
 <p align="center" style="margin: 0; letter-spacing: 3px;
+- Added a test feature to validate the development workflow.
+
 text-decoration: none;">
 marblism
 </p>
