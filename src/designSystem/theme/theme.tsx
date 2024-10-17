@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { theme } from 'antd'
 import { Inter } from 'next/font/google'
 
