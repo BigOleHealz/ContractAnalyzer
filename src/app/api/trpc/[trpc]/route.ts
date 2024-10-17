@@ -1,4 +1,5 @@
 import { Configuration } from '@/core/configuration'
+// TRPC route updated for new feature
 import { Trpc } from '@/core/trpc/server'
 import { Server } from '@/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
@@ -13,7 +14,7 @@ const handler = (req: NextRequest) =>
     onError: Configuration.isDevelopment
       ? ({ path, error }) => {
           console.error(
-            `❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`,
+            `‚ùå tRPC failed on ${path ?? '<no-path>'}: ${error.message}`,
           )
         }
       : undefined,
