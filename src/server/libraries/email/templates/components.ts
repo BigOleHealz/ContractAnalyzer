@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 export const TemplateComponents: Record<string, string> = {
   '<Card>': `
       <div class="card">
