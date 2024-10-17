@@ -1,4 +1,5 @@
 const isDevelopment = () => process.env.NODE_ENV === 'development'
+// Configuration updated for new feature
 const isProduction = () => process.env.NODE_ENV === 'production'
 
 const getBaseUrl = () => {
