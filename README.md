@@ -1,3 +1,9 @@
+# Test Component
+
+To verify that the project setup is correct, a Test Component has been added.
+
+To view the Test Component, ensure your development server is running and navigate to the main page. You should see a message saying "Test Component is working!".
+
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
