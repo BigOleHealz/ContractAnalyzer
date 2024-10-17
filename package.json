@@ -3,6 +3,7 @@
   "node": "20.x"
 },
   "name": "@marblism/nextjs",
+    "test": "jest", 
   "version": "1.0.5",
   "private": true,
   "type": "module",
