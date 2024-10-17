@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// Tailwind configuration updated for new feature
 const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   darkMode: 'selector',
