@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import clsx from 'clsx'
 import { LandingAvatar } from './LandingAvatar'
 import { LandingRating } from './LandingRating'

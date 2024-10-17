@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { Logo } from '@/designSystem/layouts/NavigationLayout/components/Logo'
 import { LinkedinFilled, TwitterCircleFilled } from '@ant-design/icons'
 import Link from 'next/link'

@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 'use client'
 
 import { useUserContext } from '@/core/context'

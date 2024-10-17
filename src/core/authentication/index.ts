@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { RegistrationService } from '@/server/libraries/registration'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { PrismaClient } from '@prisma/client'
