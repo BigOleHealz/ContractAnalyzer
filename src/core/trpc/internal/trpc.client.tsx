@@ -1,4 +1,5 @@
 import { createTRPCReact } from '@/.marblism/api/client/react'
+// TRPC client configuration updated for new feature
 import { Configuration } from '@/core/configuration'
 import { AppRouter } from '@/server'
 import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
