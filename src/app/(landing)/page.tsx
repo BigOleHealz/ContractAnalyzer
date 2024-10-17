@@ -3,21 +3,25 @@ import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
 import LandingFAQ from '@/designSystem/landing/LandingFAQ'
 import { LandingFeatures } from '@/designSystem/landing/LandingFeatures'
+// Test Issue: This is a test comment for issue tracking validation
 import { LandingHero } from '@/designSystem/landing/LandingHero'
 import { LandingHowItWorks } from '@/designSystem/landing/LandingHowItWorks'
 import { LandingPainPoints } from '@/designSystem/landing/LandingPainPoints'
 import { LandingPricing } from '@/designSystem/landing/LandingPricing'
 import { LandingSocialProof } from '@/designSystem/landing/LandingSocialProof'
+// Test Pull Request: This is a test comment for pull request validation
 import { LandingSocialRating } from '@/designSystem/landing/LandingSocialRating'
 import { LandingTestimonials } from '@/designSystem/landing/LandingTestimonials'
 import {
   EditOutlined,
   FileSearchOutlined,
+// Backward Compatibility: This is a test comment for backward compatibility validation
   SafetyOutlined,
   ClockCircleOutlined,
   DollarOutlined,
   TeamOutlined,
 } from '@ant-design/icons'
+// Feature Implementation: This is a test comment for feature implementation validation
 
 export default function LandingPage() {
   const features = [
@@ -193,15 +197,15 @@ export default function LandingPage() {
 
   const painPoints = [
     {
-      emoji: `😕`,
+      emoji: `ðŸ˜•`,
       title: `Confusion: Faced with pages of legal jargon`,
     },
     {
-      emoji: `😰`,
+      emoji: `ðŸ˜°`,
       title: `Anxiety: Unsure if you're missing important details`,
     },
     {
-      emoji: `💸`,
+      emoji: `ðŸ’¸`,
       title: `Frustration: Unexpected fees or unfair terms after signing`,
     },
   ]
