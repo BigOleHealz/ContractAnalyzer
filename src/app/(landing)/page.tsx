@@ -1,3 +1,46 @@
+import { LandingCTA } from '@/designSystem/landing/LandingCTA'
+import { LandingContainer } from '@/designSystem/landing/LandingContainer'
+import LandingFAQ from '@/designSystem/landing/LandingFAQ'
+import { LandingFeatures } from '@/designSystem/landing/LandingFeatures'
+import { LandingHero } from '@/designSystem/landing/LandingHero'
+import { LandingHowItWorks } from '@/designSystem/landing/LandingHowItWorks'
+import { LandingPainPoints } from '@/designSystem/landing/LandingPainPoints'
+
+const testimonials = [
+  {
+    heading: `AI-Powered Contract Analysis`,
+    description: `Our advanced AI technology scans and interprets complex legal jargon, highlighting crucial clauses you need to be aware of.`,
+    icon: <SafetyOutlined />,
+  },
+  {
+    heading: `User-Friendly Interface`,
+    description: `Upload PDFs or paste text effortlessly. Get clear, concise summaries of important contract points in seconds.`,
+    icon: <UserOutlined />,
+  },
+  {
+    heading: `Protection Against Hidden Clauses`,
+    description: `Never miss a hidden fee or unfair term again. Our app flags potential issues, keeping you informed and protected.`,
+    icon: <SafetyOutlined />,
+  },
+]
+
+export default function Page() {
+  return (
+    <LandingContainer>
+      <LandingHero />
+      <LandingFeatures
+        title="Features"
+        subtitle="Explore the benefits of our app"
+        features={testimonials}
+      />
+      <LandingHowItWorks />
+      <LandingPainPoints />
+      <LandingFAQ />
+      <LandingCTA />
+    </LandingContainer>
+  )
+}
+
 'use client'
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
@@ -193,15 +236,15 @@ export default function LandingPage() {
 
   const painPoints = [
     {
-      emoji: `😕`,
+      emoji: `ðŸ˜•`,
       title: `Confusion: Faced with pages of legal jargon`,
     },
     {
-      emoji: `😰`,
+      emoji: `ðŸ˜°`,
       title: `Anxiety: Unsure if you're missing important details`,
     },
     {
-      emoji: `💸`,
+      emoji: `ðŸ’¸`,
       title: `Frustration: Unexpected fees or unfair terms after signing`,
     },
   ]
