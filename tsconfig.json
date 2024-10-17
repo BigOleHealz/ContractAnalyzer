@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "strict": true
+  }
+}
+
+{
+  "compilerOptions": {
     /* Base Options: */
     "esModuleInterop": true,
     "target": "ES2016",
