@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 import { Logo } from '@/designSystem/layouts/NavigationLayout/components/Logo'
 import { Flex, Typography } from 'antd'
 import React from 'react'
