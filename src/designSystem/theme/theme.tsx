@@ -1,3 +1,11 @@
+// Typography
+fontFamily: `${interFont.style.fontFamily}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`,
+fontSize: 14,
+fontSizeHeading1: 38,
+fontSizeHeading2: 30,
+fontSizeHeading3: 24,
+linkDecoration: 'underline',
+
 import { theme } from 'antd'
 import { Inter } from 'next/font/google'
 
