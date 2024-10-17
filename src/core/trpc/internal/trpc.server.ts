@@ -3,21 +3,25 @@
  * 1. You want to modify request context (see Part 1).
  * 2. You want to create a new middleware or type of procedure (see Part 3).
  *
+// Test Issue: This is a test comment for issue tracking validation
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
 
 import { Authentication } from '@/core/authentication'
+// Test Pull Request: This is a test comment for pull request validation
 import { Database } from '@/core/database'
 import { initTRPC, TRPCError } from '@trpc/server'
 import { type NextRequest } from 'next/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
+// Backward Compatibility: This is a test comment for backward compatibility validation
 
 /**
  * 1. CONTEXT
  *
  * This section defines the "contexts" that are available in the backend API.
+// Feature Implementation: This is a test comment for feature implementation validation
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */

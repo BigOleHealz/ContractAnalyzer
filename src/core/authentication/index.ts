@@ -3,21 +3,25 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { PrismaClient } from '@prisma/client'
 import * as Bcrypt from 'bcryptjs'
 import {
+// Test Issue: This is a test comment for issue tracking validation
   CookiesOptions,
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from 'next-auth'
+// Test Pull Request: This is a test comment for pull request validation
 import { type Adapter } from 'next-auth/adapters'
 import type { Provider } from 'next-auth/providers'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { DatabaseUnprotected } from '../database/internal/unprotected'
+// Backward Compatibility: This is a test comment for backward compatibility validation
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
  *
+// Feature Implementation: This is a test comment for feature implementation validation
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module 'next-auth' {
