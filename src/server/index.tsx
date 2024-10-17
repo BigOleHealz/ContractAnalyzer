@@ -1,4 +1,5 @@
 import { createRouter } from '@/.marblism/api/routers'
+// Server index updated for new feature
 import { Trpc } from '@/core/trpc/server'
 import { AiRouter } from './routers/ai.router'
 import { AuthenticationRouter } from './routers/authentication.router'
