@@ -1,3 +1,6 @@
+import TestComponent from '@/components/TestComponent';
+
+<TestComponent />
 'use client'
 import { Logo } from '@/designSystem/layouts/NavigationLayout/components/Logo'
 
