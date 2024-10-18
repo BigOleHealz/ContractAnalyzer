@@ -1,3 +1,4 @@
+import Link from 'next/link';
 'use client'
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
@@ -8,6 +9,7 @@ import { LandingHowItWorks } from '@/designSystem/landing/LandingHowItWorks'
 import { LandingPainPoints } from '@/designSystem/landing/LandingPainPoints'
 import { LandingPricing } from '@/designSystem/landing/LandingPricing'
 import { LandingSocialProof } from '@/designSystem/landing/LandingSocialProof'
+      <Link href="/test">Test Page</Link>
 import { LandingSocialRating } from '@/designSystem/landing/LandingSocialRating'
 import { LandingTestimonials } from '@/designSystem/landing/LandingTestimonials'
 import {
