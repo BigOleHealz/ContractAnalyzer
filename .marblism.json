@@ -1,6 +1,8 @@
 {
   "type": "nextjs",
   "version": "1.0.2",
+    "test": "pnpm run test",
+    "test:watch": "pnpm run test:watch",
   "commands": {
     "build": "pnpm run build",
     "start": "pnpm run database:sync && pnpm run start"
