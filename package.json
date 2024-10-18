@@ -3,6 +3,8 @@
   "node": "20.x"
 },
   "name": "@marblism/nextjs",
+    "test": "jest",
+    "test:watch": "jest --watch", 
   "version": "1.0.5",
   "private": true,
   "type": "module",
