@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 /* eslint-disable */
 import { type RouterFactory, type ProcBuilder, type BaseConfig, db } from ".";
 import * as _Schema from '@zenstackhq/runtime/zod/input';
