@@ -8,6 +8,11 @@
 
 <a  style="margin: 0;" target="_blank" href="https://marblism.com">
 <p align="center" style="margin: 0; letter-spacing: 3px;
+
+## Viewing the Test Component
+
+To view the `TestComponent`, start the development server and navigate to `http://localhost:3000/test`.
+This component is used to verify the setup and configuration of the project.
 text-decoration: none;">
 marblism
 </p>
