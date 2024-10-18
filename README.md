@@ -1,3 +1,8 @@
+# New Feature
+
+This project now includes a new feature that enhances the application functionality.
+
+Refer to the documentation for more details.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
