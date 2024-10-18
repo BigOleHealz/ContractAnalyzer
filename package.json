@@ -1,5 +1,8 @@
 {
   "engines": {
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "test:coverage": "jest --coverage",
   "node": "20.x"
 },
   "name": "@marblism/nextjs",
