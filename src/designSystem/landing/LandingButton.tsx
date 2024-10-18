@@ -3,6 +3,11 @@ import { twMerge } from 'tailwind-merge'
 
 export interface IButton extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string
+import { AnchorHTMLAttributes } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+export interface IButton extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string
   size?: 'sm' | 'md' | 'lg'
   block?: boolean
   type?: 'outline' | 'primary' | 'inverted' | 'muted'
