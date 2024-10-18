@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 import { HTMLAttributes, ReactNode } from 'react'
 import { DesignSystemUtility } from '../helpers/utility'
 import LandingButton from './LandingButton'
