@@ -1,3 +1,8 @@
+# Project Name
+
+## Testing
+
+Refer to [documentation/testing.md](documentation/testing.md) for detailed testing guidelines.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
