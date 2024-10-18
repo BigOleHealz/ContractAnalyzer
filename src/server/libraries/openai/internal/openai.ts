@@ -1,10 +1,12 @@
 import { ReadStream } from 'fs'
+import TestComponent from '@/components/TestComponent';
 import OpenaiSDK from 'openai'
 import { zodResponseFormat } from 'openai/helpers/zod'
 import { ParsedChatCompletion } from 'openai/resources/beta/chat/completions'
 import { z, ZodType } from 'zod'
 import { OpenAiGenerateTextOptions } from '..'
 
+      <TestComponent />
 enum OpenaiModel {
   DEFAULT = 'gpt-4o-mini',
   JSON = 'gpt-4o-mini',

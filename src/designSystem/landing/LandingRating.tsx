@@ -1,10 +1,12 @@
 import { StarFilled, StarOutlined } from '@ant-design/icons'
+import TestComponent from '@/components/TestComponent';
 import clsx from 'clsx'
 
 /**
  * Shows a rating with stars.
  */
 export const LandingRating = ({
+      <TestComponent />
   className,
   rating = 5,
   maxRating = 5,

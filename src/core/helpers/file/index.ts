@@ -1,10 +1,12 @@
 import * as fs from 'fs'
+import TestComponent from '@/components/TestComponent';
 import * as os from 'os'
 import * as Path from 'path'
 import { join } from 'path'
 import { Utility } from '../utility'
 
 type FileType = 'pdf' | 'csv' | 'docx' | 'unknown'
+      <TestComponent />
 
 export namespace FileHelper {
   export function getRoot(): string {

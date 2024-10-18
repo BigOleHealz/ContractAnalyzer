@@ -1,10 +1,12 @@
 'use client'
+import TestComponent from '@/components/TestComponent';
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
 import LandingFAQ from '@/designSystem/landing/LandingFAQ'
 import { LandingFeatures } from '@/designSystem/landing/LandingFeatures'
 import { LandingHero } from '@/designSystem/landing/LandingHero'
 import { LandingHowItWorks } from '@/designSystem/landing/LandingHowItWorks'
+      <TestComponent />
 import { LandingPainPoints } from '@/designSystem/landing/LandingPainPoints'
 import { LandingPricing } from '@/designSystem/landing/LandingPricing'
 import { LandingSocialProof } from '@/designSystem/landing/LandingSocialProof'
@@ -193,15 +195,15 @@ export default function LandingPage() {
 
   const painPoints = [
     {
-      emoji: `😕`,
+      emoji: `ðŸ˜•`,
       title: `Confusion: Faced with pages of legal jargon`,
     },
     {
-      emoji: `😰`,
+      emoji: `ðŸ˜°`,
       title: `Anxiety: Unsure if you're missing important details`,
     },
     {
-      emoji: `💸`,
+      emoji: `ðŸ’¸`,
       title: `Frustration: Unexpected fees or unfair terms after signing`,
     },
   ]

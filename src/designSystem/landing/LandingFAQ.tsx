@@ -1,10 +1,12 @@
 import { ArrowRightOutlined } from '@ant-design/icons'
+import TestComponent from '@/components/TestComponent';
 import { HTMLAttributes } from 'react'
 import { DesignSystemUtility } from '../helpers/utility'
 
 interface Props extends HTMLAttributes<HTMLElement> {
   title: string
   subtitle: string
+      <TestComponent />
   questionAnswers: { question: string; answer: string }[]
 }
 
