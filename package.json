@@ -4,6 +4,8 @@
 },
   "name": "@marblism/nextjs",
   "version": "1.0.5",
+    "test": "jest",
+
   "private": true,
   "type": "module",
   "scripts": {
@@ -45,6 +47,8 @@
     "@trpc/server": "^10.37.1",
     "antd": "^5.18.2",
     "autoprefixer": "^10.4.19",
+    "jest": "^27.0.0",
+
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
