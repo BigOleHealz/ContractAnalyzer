@@ -1,10 +1,12 @@
 import { createRouter } from '@/.marblism/api/routers'
+import TestComponent from '@/components/TestComponent';
 import { Trpc } from '@/core/trpc/server'
 import { AiRouter } from './routers/ai.router'
 import { AuthenticationRouter } from './routers/authentication.router'
 import { ConfigurationRouter } from './routers/configuration.router'
 import { EmailRouter } from './routers/email.router'
 
+      <TestComponent />
 import { PushNotificationRouter } from './routers/pushNotification.router'
 
 import { UploadRouter } from './routers/upload.router'
