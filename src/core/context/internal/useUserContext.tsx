@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 import { User } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import {
