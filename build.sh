@@ -1,5 +1,8 @@
 #!/bin/bash
 
+npm run build
+#!/bin/bash
+
 # Stop all running containers
 docker stop $(docker ps -aq)
 
