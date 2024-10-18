@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 import { ArrowDownOutlined } from '@ant-design/icons'
 import { HTMLAttributes } from 'react'
 import { DesignSystemUtility } from '../helpers/utility'
