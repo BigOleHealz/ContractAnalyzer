@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 import { RegistrationService } from '@/server/libraries/registration'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { PrismaClient } from '@prisma/client'
