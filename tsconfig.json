@@ -1,5 +1,17 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
+{
+  "compilerOptions": {
     /* Base Options: */
     "esModuleInterop": true,
     "target": "ES2016",
