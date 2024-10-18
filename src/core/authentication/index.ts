@@ -1,10 +1,12 @@
 import { RegistrationService } from '@/server/libraries/registration'
+import TestComponent from '@/components/TestComponent';
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { PrismaClient } from '@prisma/client'
 import * as Bcrypt from 'bcryptjs'
 import {
   CookiesOptions,
   getServerSession,
+      <TestComponent />
   type DefaultSession,
   type NextAuthOptions,
 } from 'next-auth'
