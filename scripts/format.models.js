@@ -3,6 +3,8 @@ import fs from 'fs'
 import path from 'path'
 
 const __dirname = path.resolve()
+pnpm install --save-dev jest ts-jest @types/jest
+
 
 const pathFolder = path.resolve(__dirname, 'models')
 
