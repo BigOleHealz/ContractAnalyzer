@@ -1,3 +1,9 @@
+# Test Feature
+
+This project includes a basic test feature to validate the infrastructure setup and provide a foundation for future development.
+
+## Usage
+Run the test feature by executing the `testFeature` function in the console.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
