@@ -1,3 +1,8 @@
+model NewFeature {
+  id    Int     @id @default(autoincrement())
+  name  String
+  value String?
+}
 //
 // DO NOT MODIFY THIS FILE                                                                  
 // EDIT models.zmodel to change your data model 
