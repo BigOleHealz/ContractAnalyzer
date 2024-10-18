@@ -1,3 +1,8 @@
+module.exports = {
+  reactStrictMode: true,
+  webpack: (config) => {
+    return config;
+  },
 
 import withPWA from 'next-pwa'
 
