@@ -1,3 +1,8 @@
+# Email Feature
+
+The email feature has been updated to include the new feature component.
+
+Refer to the new feature documentation for more details.
 # Email tRPC Api
 
 The codebase already includes a complete email library router that you can call from the front-end to send emails to a specific user.
