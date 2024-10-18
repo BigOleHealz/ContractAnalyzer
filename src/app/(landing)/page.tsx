@@ -1,3 +1,8 @@
+import { NewFeatureComponent } from '@/new_feature_component';
+
+// Example usage of the new feature component
+const ExampleUsage = () => {
+    return <NewFeatureComponent />;
 'use client'
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
@@ -193,15 +198,15 @@ export default function LandingPage() {
 
   const painPoints = [
     {
-      emoji: `😕`,
+      emoji: `ðŸ˜•`,
       title: `Confusion: Faced with pages of legal jargon`,
     },
     {
-      emoji: `😰`,
+      emoji: `ðŸ˜°`,
       title: `Anxiety: Unsure if you're missing important details`,
     },
     {
-      emoji: `💸`,
+      emoji: `ðŸ’¸`,
       title: `Frustration: Unexpected fees or unfair terms after signing`,
     },
   ]
