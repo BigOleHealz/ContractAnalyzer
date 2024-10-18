@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "new-feature": "node src/new_feature_component.js"
+  }
+}
+{
   "engines": {
   "node": "20.x"
 },
