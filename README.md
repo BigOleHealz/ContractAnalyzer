@@ -1,6 +1,13 @@
 <div style="background: black;">
 <p align="center" style="margin: 0;">
+
+## Running Tests
+
+To run the tests, use the following command:
+```bash
   <a href="https://dev.marblism.com" target="blank">
+pnpm test
+```
     <img src="https://marblism-dashboard-api--production-public.s3.us-west-1.amazonaws.com/marblism-logo.png" height="150" alt="Marblism Logo" />
   </a>
 </p>
