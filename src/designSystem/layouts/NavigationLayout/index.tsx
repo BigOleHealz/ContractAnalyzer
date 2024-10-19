@@ -2,6 +2,7 @@ import { useUserContext } from '@/core/context'
 import { Flex } from 'antd'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
+import { NewComponent } from './components/NewComponent'
 import { Leftbar } from './components/Leftbar'
 import { Mobilebar } from './components/Mobilebar'
 import { Topbar } from './components/Topbar'
@@ -13,6 +14,10 @@ interface Props {
 
 export const NavigationLayout: React.FC<Props> = ({ children }) => {
   const router = useRouter()
+      <NewComponent />
+
+      {/* Existing components */}
+
   const pathname = usePathname()
   const params: Record<string, string> = useParams()
 
