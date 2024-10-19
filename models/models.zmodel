@@ -1,5 +1,8 @@
 
 
+model NewFeatureModel {
+  id String @id @default(uuid())
+
 model Contract {
 
     id                String        @id @default(uuid())  
