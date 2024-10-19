@@ -1,6 +1,8 @@
 import * as fs from 'fs'
+const testVariable = process.env.TEST_VARIABLE;
 
 const templatePath = '.env.template'
+console.log(`Test Variable: ${testVariable}`);
 const envPath = '.env'
 
 try {
