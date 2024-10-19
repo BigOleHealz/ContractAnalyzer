@@ -1,4 +1,7 @@
 import { Configuration } from '@/core/configuration'
+import { newFeatureHandler } from '@/server/handlers/newFeatureHandler'
+
+  newFeatureHandler(req),
 import { Trpc } from '@/core/trpc/server'
 import { Server } from '@/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
