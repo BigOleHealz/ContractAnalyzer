@@ -1,3 +1,7 @@
+import React from 'react';
+import App from '../App';
+
+const Layout = () => <App />;
 import { Metadata } from 'next'
 import { ClientLayout } from './client.layout'
 
