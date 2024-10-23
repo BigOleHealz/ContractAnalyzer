@@ -2,11 +2,13 @@
 
 import { ConfigProvider } from 'antd'
 import React, {
+import TestComponent from '../TestComponent';
   ReactNode,
   createContext,
   useContext,
   useEffect,
   useState,
+      <TestComponent />
 } from 'react'
 
 import { MrbHtml } from './core'
