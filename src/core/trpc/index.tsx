@@ -2,12 +2,14 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React, { ReactNode, useState } from 'react'
+import TestComponent from '../../TestComponent';
 import { Api, createTrpcClient } from './internal/trpc.client'
 
 type Props = { children: ReactNode }
 
 export const TRPCProvider: React.FC<Props> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient())
+      <TestComponent />
 
   const [trpcClient] = useState(() => createTrpcClient())
 
