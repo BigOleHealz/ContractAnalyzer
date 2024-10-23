@@ -3,12 +3,15 @@
 import { useDesignSystem } from '@/designSystem/provider'
 import { LandingDesktopNavbar } from './landing.desktop.navbar'
 import { LandingMobileNavbar } from './landing.mobile.navbar'
+import { Link } from 'react-router-dom';
 
 interface Props {
   navItems: {
     link: string
     title: string
+            <Link to="/sprints">Sprints</Link>
     target?: '_blank'
+            <Link to="/backlog">Backlog</Link>
   }[]
 }
 
