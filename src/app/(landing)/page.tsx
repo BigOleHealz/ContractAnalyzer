@@ -1,8 +1,10 @@
 'use client'
+import TestComponent from '../../TestComponent';
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
 import LandingFAQ from '@/designSystem/landing/LandingFAQ'
 import { LandingFeatures } from '@/designSystem/landing/LandingFeatures'
+      <TestComponent />
 import { LandingHero } from '@/designSystem/landing/LandingHero'
 import { LandingHowItWorks } from '@/designSystem/landing/LandingHowItWorks'
 import { LandingPainPoints } from '@/designSystem/landing/LandingPainPoints'
