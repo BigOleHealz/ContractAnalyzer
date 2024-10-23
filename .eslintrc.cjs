@@ -1,3 +1,6 @@
+// Add any test-specific ESLint configurations here
+{
+  "env": { "jest": true }
 module.exports = {
   extends: 'next/core-web-vitals',
   plugins: ['@marblism'],
