@@ -3,6 +3,7 @@
   "node": "20.x"
 },
   "name": "@marblism/nextjs",
+    "@testing-library/react": "^12.1.2",
   "version": "1.0.5",
   "private": true,
   "type": "module",
