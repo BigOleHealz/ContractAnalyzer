@@ -3,6 +3,12 @@
   "node": "20.x"
 },
   "name": "@marblism/nextjs",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "react-redux": "^7.2.1",
+    "@reduxjs/toolkit": "^1.5.0",
+    "react-beautiful-dnd": "^13.0.0"
+
   "version": "1.0.5",
   "private": true,
   "type": "module",
