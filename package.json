@@ -1,3 +1,5 @@
+// Ensure all dependencies required by the test component or page are included
+// No new dependencies needed for the test feature
 {
   "engines": {
   "node": "20.x"
