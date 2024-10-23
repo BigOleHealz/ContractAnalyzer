@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import TestComponent from '../../TestComponent';
 import { ImgHTMLAttributes } from 'react'
 
 interface LandingAvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   size?: 'small' | 'medium' | 'large'
+      <TestComponent />
 }
 
 /**
