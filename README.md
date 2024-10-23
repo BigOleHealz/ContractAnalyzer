@@ -1,3 +1,9 @@
+# Test Feature
+
+This feature introduces a test page and component to validate the application's setup and functionality.
+
+## Test Page
+Accessible at `/test`, this page includes the `TestComponent` to verify routing and rendering.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
