@@ -1,3 +1,23 @@
+# Jira to GitHub Integration
+
+This project includes a webhook endpoint that receives requests from Jira and automatically creates corresponding GitHub issues based on the Jira tickets received.
+
+## Setup Instructions
+
+1. **Environment Variables**: Create a `.env` file in the root of your project and add the following variables:
+   ```
+   GITHUB_TOKEN=your_github_personal_access_token
+   JIRA_SECRET=your_jira_webhook_secret
+   ```
+
+2. **Jira Webhook Configuration**: In your Jira instance, set up a webhook to send issue events to your deployed endpoint at `/api/jira-webhook`.
+
+3. **GitHub Repository**: Ensure the GitHub repository where issues will be created is accessible and the provided token has the necessary permissions.
+
+## Running the Project
+
+To run the project locally, use:
+```
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
