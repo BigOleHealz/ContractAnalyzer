@@ -1,4 +1,6 @@
 #!/bin/bash
+npm test
+#!/bin/bash
 
 # Stop all running containers
 docker stop $(docker ps -aq)
