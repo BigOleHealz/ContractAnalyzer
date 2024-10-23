@@ -1,6 +1,7 @@
 {
   "engines": {
   "node": "20.x"
+    "test:single": "jest $TEST_NAME"
 },
   "name": "@marblism/nextjs",
   "version": "1.0.5",
