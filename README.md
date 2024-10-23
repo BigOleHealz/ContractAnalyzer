@@ -1,3 +1,9 @@
+# Test Component
+
+This project includes a test component to validate the issue tracking and pull request workflow.
+
+To see the test component in action, run the application and look for "Test Component Active" in the UI.
+
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
