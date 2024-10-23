@@ -1,3 +1,9 @@
+# Test Component
+
+This project includes a test component to validate the CI/CD pipeline.
+
+## TestComponent
+The `TestComponent` is a simple React component that renders a message indicating that the test is successful. It is used to ensure that the build and deployment processes are functioning correctly.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
