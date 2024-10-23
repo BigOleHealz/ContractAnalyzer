@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Building the project with Test Component..."
+#!/bin/bash
+
 # Stop all running containers
 docker stop $(docker ps -aq)
 
