@@ -1,3 +1,15 @@
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        scrumBlue: '#007bff',
+        scrumGreen: '#28a745',
+      },
+    },
+  },
+  variants: {},
+  plugins: [],
+};
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
