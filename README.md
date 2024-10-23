@@ -1,3 +1,9 @@
+# New Feature Implementation
+
+This update includes a new feature component added to the application. The component is integrated into the main application and can be viewed by running the application locally.
+
+## How to Run
+1. Clone the repository and navigate to the project directory. Run `npm install` to install dependencies. Use `npm start` to run the application.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
