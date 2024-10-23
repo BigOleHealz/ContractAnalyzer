@@ -1,0 +1,16 @@
+name: "Issue Handling Workflow"
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  handle-issues:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check if issue is a test
+      if: contains(github.event.issue.labels.*.name, 'test')
+      run: echo "This is a test issue. Skipping further actions."
+    - name: Process real issue
+      if: ${{ !contains(github.event.issue.labels.*.name, 'test') }}
+      run: echo "Processing real issue..."
