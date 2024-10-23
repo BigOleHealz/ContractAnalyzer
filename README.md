@@ -1,3 +1,9 @@
+# Test Component
+
+This project includes a Test Component to verify the development setup.
+
+## Usage
+Import and use the `TestComponent` in your React application to ensure everything is working correctly.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
