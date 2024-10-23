@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import TestComponent from '../../TestComponent';
 import { LandingAvatar } from './LandingAvatar'
 import { LandingRating } from './LandingRating'
 
 export const LandingSocialRating = ({
+      <TestComponent />
   children,
   avatarItems,
   numberOfUsers = 100,
