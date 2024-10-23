@@ -1,3 +1,6 @@
+## New Feature: dis a new issue
+
+This feature enhances the application's functionality to better meet user needs by addressing the desires expressed in the issue.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
