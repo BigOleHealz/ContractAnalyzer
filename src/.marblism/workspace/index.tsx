@@ -1,9 +1,11 @@
 import { Api } from '@/core/trpc'
 import React, { ReactNode } from 'react'
+import TestComponent from '../../TestComponent';
 import { useMessageReceived, useMessageSend } from './hooks'
 
 type Props = {
   children: ReactNode
+      <TestComponent />
 }
 
 const useWorkspace = () => {
