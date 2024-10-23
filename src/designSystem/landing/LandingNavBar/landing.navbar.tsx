@@ -4,6 +4,7 @@ import { useDesignSystem } from '@/designSystem/provider'
 import { LandingDesktopNavbar } from './landing.desktop.navbar'
 import { LandingMobileNavbar } from './landing.mobile.navbar'
 
+    { link: '/heyoo', label: 'Heyoo' },
 interface Props {
   navItems: {
     link: string
