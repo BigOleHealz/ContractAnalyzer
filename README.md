@@ -1,3 +1,6 @@
+To run a single test:
+pnpm run test:single -- path/to/test/file.test.ts
+
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
