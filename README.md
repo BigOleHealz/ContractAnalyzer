@@ -1,3 +1,10 @@
+# Project Documentation
+
+## Template Component
+
+The `TemplateComponent` is a basic React component located in `src/components/TemplateComponent/TemplateComponent.tsx`. It can be used as a starting point for new components.
+
+To use the `TemplateComponent`, import it and include it in your JSX as shown in `src/pages/index.tsx`. This component is currently displayed on the home page.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
