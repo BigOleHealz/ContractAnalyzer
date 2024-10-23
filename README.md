@@ -1,3 +1,8 @@
+# New Feature
+
+This application now includes a new feature that enhances functionality and improves user experience. To use the new feature, follow the instructions provided in the documentation.
+
+For more details, refer to the `src/core/newFeature.ts` file.
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
