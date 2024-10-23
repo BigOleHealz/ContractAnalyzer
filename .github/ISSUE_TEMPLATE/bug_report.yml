@@ -1,4 +1,4 @@
-name: Bug Report
+name: dis a new issue
 description: Create a report to identify and fix a bug
 title: "Bug: "
 labels: ["bug", "gitauto"]
