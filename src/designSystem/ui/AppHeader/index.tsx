@@ -1,3 +1,6 @@
+// New feature implementation for Test Issue
+// Additional imports or modifications can be added here
+
 import { Logo } from '@/designSystem/layouts/NavigationLayout/components/Logo'
 import { Flex, Typography } from 'antd'
 import React from 'react'
