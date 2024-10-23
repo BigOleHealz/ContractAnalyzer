@@ -1,6 +1,7 @@
 {
   "engines": {
   "node": "20.x"
+    "test": "jest",
 },
   "name": "@marblism/nextjs",
   "version": "1.0.5",
@@ -8,6 +9,9 @@
   "type": "module",
   "scripts": {
     "init": "pnpm install && pnpm run docker:init ; pnpm run env:init ; pnpm run global:sync ; pnpm run database:seed",
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
     "dev": "next dev -p 8099",
     "debug": "NODE_OPTIONS='--inspect' next dev -p 8099",
     "build": "pnpm run crud:sync && next build",
