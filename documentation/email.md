@@ -1,4 +1,5 @@
 # Email tRPC Api
+// Test Component Integration
 
 The codebase already includes a complete email library router that you can call from the front-end to send emails to a specific user.
 
