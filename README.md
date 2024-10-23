@@ -1,4 +1,7 @@
 <div style="background: black;">
+
+## New Feature
+Refer to `documentation/new_feature_documentation.md` for details on the new feature added.
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
     <img src="https://marblism-dashboard-api--production-public.s3.us-west-1.amazonaws.com/marblism-logo.png" height="150" alt="Marblism Logo" />
