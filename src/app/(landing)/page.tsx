@@ -1,4 +1,11 @@
 'use client'
+import React from 'react';
+
+const IndexPage = () => (
+  <div className="p-4">
+    <h1 className="text-2xl font-bold">Hello</h1>
+  </div>
+);
 import { LandingCTA } from '@/designSystem/landing/LandingCTA'
 import { LandingContainer } from '@/designSystem/landing/LandingContainer'
 import LandingFAQ from '@/designSystem/landing/LandingFAQ'
