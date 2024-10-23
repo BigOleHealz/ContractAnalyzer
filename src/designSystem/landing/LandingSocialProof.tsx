@@ -1,8 +1,10 @@
 import { HTMLAttributes } from 'react'
+import TestComponent from '../../TestComponent';
 
 type LogoType = {
   url: string
 }
+      <TestComponent />
 
 interface Props extends HTMLAttributes<HTMLElement> {
   title: string
