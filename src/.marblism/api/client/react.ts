@@ -1,9 +1,11 @@
 /* eslint-disable */
+import TestComponent from '../../../TestComponent';
 
 import type { AnyRouter } from '@trpc/server';
 import type { CreateTRPCReactOptions } from '@trpc/react-query/shared';
 import { type CreateTRPCReact, createTRPCReact as _createTRPCReact } from '@trpc/react-query';
 import type { DeepOverrideAtPath } from './utils';
+      <TestComponent />
 import type { ClientType } from '../routers';
 
 export function createTRPCReact<
