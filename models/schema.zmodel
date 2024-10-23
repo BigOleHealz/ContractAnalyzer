@@ -1,6 +1,16 @@
 //
 // DO NOT MODIFY THIS FILE                                                                  
 // EDIT models.zmodel to change your data model 
+
+model Issue {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 //
 
 import "./models.zmodel"
