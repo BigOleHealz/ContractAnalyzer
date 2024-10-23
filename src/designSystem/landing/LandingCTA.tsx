@@ -1,9 +1,11 @@
 import { HTMLAttributes } from 'react'
 import { DesignSystemUtility } from '../helpers/utility'
+import TestComponent from '../../TestComponent';
 import LandingButton from './LandingButton'
 
 interface Props extends HTMLAttributes<HTMLElement> {
   title?: string
+      <TestComponent />
   subtitle?: string
   buttonText?: string
   buttonLink?: string
