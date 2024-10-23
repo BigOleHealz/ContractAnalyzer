@@ -1,3 +1,8 @@
+# Running Tests
+
+To run the tests locally, execute the following command:
+
+```bash
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
