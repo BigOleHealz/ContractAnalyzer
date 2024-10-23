@@ -1,3 +1,13 @@
+# Testing Framework for Issue Tracking
+
+This project includes a test framework to validate the issue tracking and handling process within the application.
+
+## Running Tests
+
+To run the tests, use the following command:
+
+```
+npm test
 <div style="background: black;">
 <p align="center" style="margin: 0;">
   <a href="https://dev.marblism.com" target="blank">
