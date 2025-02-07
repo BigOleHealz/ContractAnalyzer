@@ -27,6 +27,10 @@ declare module 'next-auth' {
       globalRole: string
     } & DefaultSession['user']
   }
+
+  interface Profile {
+    picture?: string;
+  }
 }
 
 const providers: Provider[] = [
@@ -160,6 +164,28 @@ const options: NextAuthOptions = {
       }
 
       return token
+    },
+    async signIn({ user, account, profile }) {
+      if (account.provider === 'google') {
+        const email = profile.email;
+        const existingUser = await DatabaseUnprotected.user.findUnique({
+          where: { email },
+        });
+
+        console.log("profile: ", profile)
+
+        if (!existingUser) {
+          await DatabaseUnprotected.user.create({
+            data: {
+              email,
+              name: profile.name,
+              pictureurl: profile.picture,
+              globalRole: 'USER', // or any default role you want to assign
+            },
+          });
+        }
+      }
+      return true;
     },
   },
   adapter: PrismaAdapter(DatabaseUnprotected) as Adapter,

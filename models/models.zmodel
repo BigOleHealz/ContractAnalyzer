@@ -23,12 +23,12 @@ model Clause {
     isImportant  Boolean?        
     aiAnalysis  String?          
 
-contractId  String          
+    contractId  String          
     contract    Contract?    @relation(fields: [contractId], references: [id], name:"contract")  
  
-      dateCreated DateTime @default(now())
-      dateUpdated DateTime @updatedAt  @default(now())
-      @@allow("all", true)
+    dateCreated DateTime @default(now())
+    dateUpdated DateTime @updatedAt  @default(now())
+    @@allow("all", true)
 }
 
 enum UserStatus {
@@ -111,4 +111,34 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@allow("all", auth().id == user.id)
+}
+
+/// @@allow('all', true)
+model Subscription {
+  id          String   @id() @default(uuid())
+  userId      String
+  plan        String
+  isActive    Boolean
+  startDate   DateTime
+  endDate     DateTime?
+  tier        SubscriptionTier? @relation(fields: [plan], references: [id], name: "tier")
+
+  user        User     @relation("user", fields: [userId], references: [id])
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt()
+}
+
+/// @@allow('all', true)
+model SubscriptionTier {
+  id          String   @id() @default(uuid())
+  title        String
+  description String?
+  monthly Float
+  yearly  Float
+  features    String[]
+  subscriptions Subscription[] @relation("tier")
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt()
 }
