@@ -57,4 +57,20 @@ export namespace Utility {
 
     return `${words[0][0]}${words[1][0]}`.toUpperCase()
   }
+
+  export function removeJsonTags(inputString: string | undefined): string {
+    if (!inputString) {
+      return '';
+    }
+    let processed_string = inputString;
+    const prefix = "```json";
+    if (inputString.startsWith(prefix)) {
+      processed_string = processed_string.slice(prefix.length);
+    }
+    const endIndex = processed_string.indexOf("```");
+    if (endIndex !== -1) {
+      processed_string = processed_string.slice(0, endIndex);
+    }
+    return processed_string.trim();
+  }
 }

@@ -40,12 +40,12 @@ export const AiRouter = Trpc.createRouter({
       const { prompt, attachmentUrls } = input
       check()
 
-      const answer = await OpenaiService.generateText({
+      const analysis = await OpenaiService.generateText({
         prompt,
         attachmentUrls,
       })
 
-      return { answer }
+      return { analysis }
     }),
 
   /**

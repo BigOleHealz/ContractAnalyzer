@@ -1,21 +1,20 @@
 'use client'
 
-import { Typography, Spin, Card, Space, Tooltip } from 'antd'
-import { InfoCircleOutlined, WarningOutlined } from '@ant-design/icons'
-import { useState } from 'react'
-import { Prisma } from '@prisma/client'
-const { Title, Text, Paragraph } = Typography
 import { useUserContext } from '@/core/context'
-import { useRouter, useParams } from 'next/navigation'
-import { useUploadPublic } from '@/core/hooks/upload'
-import { useSnackbar } from 'notistack'
-import dayjs from 'dayjs'
 import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
+import { InfoCircleOutlined, WarningOutlined } from '@ant-design/icons'
+import { Prisma } from '@prisma/client'
+import { Card, Space, Spin, Tooltip, Typography } from 'antd'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useSnackbar } from 'notistack'
+import { useState } from 'react'
+const { Title, Text, Paragraph } = Typography
 
 export default function AnalysisResultsPage() {
   const router = useRouter()
-  const params = useParams<{ contractId: string }>()
+  const searchParams = useSearchParams()
+  const contractId = searchParams.get('contractId')
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -24,7 +23,7 @@ export default function AnalysisResultsPage() {
   }> | null>(null)
 
   const { data: contract, isLoading } = Api.contract.findUnique.useQuery({
-    where: { id: params.contractId },
+    where: { id: contractId },
     include: { clauses: { include: { contract: true } } },
   })
 
@@ -64,7 +63,7 @@ export default function AnalysisResultsPage() {
                 <Tooltip title="Click for more details">
                   <Text
                     strong
-                    style={{ backgroundColor: 'yellow', cursor: 'pointer' }}
+                    style={{ backgroundColor: 'rgba(255, 205, 0, 0.4)', cursor: 'pointer' }}
                     onClick={() => handleClauseClick(clause)}
                   >
                     {clause.content}{' '}
