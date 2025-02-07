@@ -66,6 +66,7 @@ model User {
   sessions          Session[]
   pushNotifications PushNotification[] @relation("user")
   contracts         Contract[]         @relation("user")
+  subscriptions     Subscription[]     @relation("user")
 }
 
 /// @@allow('all', true)
@@ -106,4 +107,31 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// @@allow('all', true)
+model Subscription {
+  id          String            @id() @default(uuid())
+  userId      String
+  plan        String
+  isActive    Boolean
+  startDate   DateTime
+  endDate     DateTime?
+  tier        SubscriptionTier? @relation(fields: [plan], references: [id], name: "tier")
+  user        User              @relation(fields: [userId], references: [id], name: "user")
+  dateCreated DateTime          @default(now())
+  dateUpdated DateTime          @default(now()) @updatedAt()
+}
+
+/// @@allow('all', true)
+model SubscriptionTier {
+  id            String         @id() @default(uuid())
+  title         String
+  description   String?
+  monthly       Float
+  yearly        Float
+  features      String[]
+  subscriptions Subscription[] @relation("tier")
+  dateCreated   DateTime       @default(now())
+  dateUpdated   DateTime       @default(now()) @updatedAt()
 }

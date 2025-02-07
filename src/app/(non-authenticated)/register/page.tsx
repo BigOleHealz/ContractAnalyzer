@@ -8,6 +8,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
+import GoogleButton from 'react-google-button'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -48,6 +49,10 @@ export default function RegisterPage() {
 
       setLoading(false)
     }
+  }
+
+  const handleGoogleSignIn = () => {
+    signIn('google', { callbackUrl: '/home' })
   }
 
   return (
@@ -103,6 +108,12 @@ export default function RegisterPage() {
             </Button>
           </Form.Item>
         </Form>
+        <Flex
+          gap={'small'}
+          justify="center"
+        >
+          <GoogleButton onClick={handleGoogleSignIn} />
+        </Flex>
 
         <Button
           ghost

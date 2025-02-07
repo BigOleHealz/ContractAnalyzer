@@ -7,12 +7,16 @@ import createUserRouter from "./User.router";
 import createPushNotificationRouter from "./PushNotification.router";
 import createAccountRouter from "./Account.router";
 import createSessionRouter from "./Session.router";
+import createSubscriptionRouter from "./Subscription.router";
+import createSubscriptionTierRouter from "./SubscriptionTier.router";
 import { ClientType as ContractClientType } from "./Contract.router";
 import { ClientType as ClauseClientType } from "./Clause.router";
 import { ClientType as UserClientType } from "./User.router";
 import { ClientType as PushNotificationClientType } from "./PushNotification.router";
 import { ClientType as AccountClientType } from "./Account.router";
 import { ClientType as SessionClientType } from "./Session.router";
+import { ClientType as SubscriptionClientType } from "./Subscription.router";
+import { ClientType as SubscriptionTierClientType } from "./SubscriptionTier.router";
 
 export type BaseConfig = AnyRootConfig;
 
@@ -43,6 +47,8 @@ export function createRouter<Config extends BaseConfig>(router: RouterFactory<Co
         pushNotification: createPushNotificationRouter(router, procedure),
         account: createAccountRouter(router, procedure),
         session: createSessionRouter(router, procedure),
+        subscription: createSubscriptionRouter(router, procedure),
+        subscriptionTier: createSubscriptionTierRouter(router, procedure),
     }
     );
 }
@@ -54,4 +60,6 @@ export interface ClientType<AppRouter extends AnyRouter> {
     pushNotification: PushNotificationClientType<AppRouter>;
     account: AccountClientType<AppRouter>;
     session: SessionClientType<AppRouter>;
+    subscription: SubscriptionClientType<AppRouter>;
+    subscriptionTier: SubscriptionTierClientType<AppRouter>;
 }

@@ -1,5 +1,3 @@
-
-
 model Contract {
 
     id                String        @id @default(uuid())  
@@ -55,12 +53,11 @@ model User {
     dateUpdated       DateTime           @updatedAt @default(now())
     accounts          Account[]
     sessions          Session[]
+    pushNotifications PushNotification[] @relation("user")
+    contracts         Contract[]         @relation("user")
+    subscriptions     Subscription[]     @relation("user")
 
-pushNotifications PushNotification[] @relation("user")
-
-contracts  Contract[]  @relation("user")  
-
-@@auth()
+    @@auth()
     @@allow("all", auth().id == this.id)
     @@allow('all', auth().globalRole == 'ADMIN')
 
@@ -123,7 +120,7 @@ model Subscription {
   endDate     DateTime?
   tier        SubscriptionTier? @relation(fields: [plan], references: [id], name: "tier")
 
-  user        User     @relation("user", fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], name: "user")
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now()) @updatedAt()

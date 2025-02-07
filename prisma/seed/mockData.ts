@@ -52,6 +52,21 @@ INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId"
 INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId") VALUES ('bf1f4c65-434f-4996-af07-a0270a2257f1', 'The lessee agrees to maintain the property in good condition and repair any damages caused during the lease period.', false, 'The noncompete clause could limit the employees future job opportunities.', '94af9c1f-9dae-4f79-8c57-730e847c1574');
 INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId") VALUES ('ac826e92-f9e6-4c5e-8b32-36a356decdf6', 'The service provider reserves the right to terminate the agreement with 30 days notice.', false, 'The as is condition means the purchaser has no recourse if the product is defective.', 'ef3d21af-4b03-4c45-b3d6-bd9da0963352');
 
+INSERT INTO "SubscriptionTier" ("id", "title", "description", "monthly", "yearly", "features") VALUES ('tier1', 'Basic', 'Perfect for individuals and freelancers', 9, 99, ARRAY['10 contract analyses per month', 'Basic clause highlighting', '24/7 customer support']);
+INSERT INTO "SubscriptionTier" ("id", "title", "description", "monthly", "yearly", "features") VALUES ('tier2', 'Pro', 'Ideal for small businesses and frequent users', 29, 299, ARRAY['Unlimited contract analyses', 'Advanced clause interpretation', 'Custom alert settings', 'Priority support']);
+INSERT INTO "SubscriptionTier" ("id", "title", "description", "monthly", "yearly", "features") VALUES ('tier3', 'Enterprise', 'Tailored solutions for large organizations', 99, 999, ARRAY['Unlimited analyses across teams', 'API access for integration', 'Dedicated account manager', 'Custom AI training']);
+
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier1', false, '2023-01-01T00:00:00.000Z', '2023-02-28T23:59:59.999Z');
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('4d5e6f7g-8h9i-0j1k-2l3m-4n5o6p7q8r9s', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier3', false, '2023-04-01T00:00:00.000Z', '2023-05-31T23:59:59.999Z');
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('7g8h9i0j-1k2l-3m4n-5o6p-7q8r9s0t1u2v', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier2', true, '2023-07-01T00:00:00.000Z', NULL);
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier1', false, '2023-03-01T00:00:00.000Z', '2023-05-31T23:59:59.999Z');
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p348f', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier2', false, '2023-06-01T00:00:00.000Z', '2023-06-30T23:59:59.999Z');
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('6f7g8h9i-0j1k-2l3m-4n5o-6p7q8r9s0t1u', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier3', true, '2023-08-01T00:00:00.000Z', NULL);
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q', '3253987a-2e58-47df-a16e-00f4c154184f', 'tier2', false, '2023-02-01T00:00:00.000Z', '2023-07-30T23:59:59.999Z');
+INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('8h9i0j1k-2l3m-4n5o-6p7q-8r9s0t1u2v3w', '3253987a-2e58-47df-a16e-00f4c154184f', 'tier3', true, '2023-08-01T00:00:00.000Z', NULL);
+
+
+
   `
 
   const sqls = splitSql(sql)

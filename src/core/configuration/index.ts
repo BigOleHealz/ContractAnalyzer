@@ -4,7 +4,8 @@ const isProduction = () => process.env.NODE_ENV === 'production'
 const getBaseUrl = () => {
   const isServer = typeof window !== 'undefined'
   const baseUrl = process.env.NEXTAUTH_URL
-  const port = process.env.PORT ?? 8099
+  const port = process.env.PORT ?? 3000
+
 
   if (isServer) {
     return ''
