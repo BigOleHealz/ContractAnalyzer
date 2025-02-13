@@ -40,7 +40,7 @@ export default function RegisterPage() {
 
       signIn('credentials', {
         ...values,
-        callbackUrl: '/home',
+        callbackUrl: '/upload-contract',
       })
     } catch (error) {
       enqueueSnackbar(`Could not signup: ${error.message}`, {
@@ -52,7 +52,7 @@ export default function RegisterPage() {
   }
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/home' })
+    signIn('google', { callbackUrl: '/upload-contract' })
   }
 
   return (

@@ -5,6 +5,8 @@ const interFont = Inter({
   subsets: ['latin'],
 })
 
+const default_font_color = '#eeeeee'
+
 export const Theme = {
   algorithm: theme.darkAlgorithm,
   token: {
@@ -14,7 +16,7 @@ export const Theme = {
     colorInfo: '#1677ff',
     colorSuccess: '#52c41a',
     colorWarning: '#faad14',
-    colorTextBase: 'white',
+    colorTextBase: default_font_color,
     colorLink: '#00a1ec',
     colorBgBase: 'black',
     colorBgContainer: 'black',
@@ -24,6 +26,8 @@ export const Theme = {
 
     // Typography
     fontFamily: `${interFont.style.fontFamily}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`,
+    // colorText: default_font_color,
+    color: default_font_color,
     fontSize: 14,
     fontSizeHeading1: 38,
     fontSizeHeading2: 30,

@@ -18,7 +18,12 @@ export default function ContractHistoryPage() {
   const { data: contracts, isLoading } = Api.contract.findMany.useQuery({
     where: { userId: user?.id },
     orderBy: { dateCreated: 'desc' },
-    include: { clauses: true },
+    select: {
+      id: true,
+      fileUrl: true,
+      clauses: true,
+      dateCreated: true,
+    },
   })
 
   const handleViewContract = (contractId: string) => {
@@ -53,7 +58,7 @@ export default function ContractHistoryPage() {
                 >
                   <Card.Meta
                     avatar={<FileTextOutlined style={{ fontSize: '24px' }} />}
-                    title={`Contract ${contract.id.slice(0, 8)}`}
+                    title={`Contract ${contract.fileUrl}`}
                     description={
                       <Space direction="vertical">
                         <Text>

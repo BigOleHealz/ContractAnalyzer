@@ -24,7 +24,7 @@ self.addEventListener('notificationclick', function (event) {
   if (event['data']) {
     const data = event['data'].json()
 
-    let url = `${window.location.origin}${data.urlOnClick ?? '/home'}`
+    let url = `${window.location.origin}${data.urlOnClick ?? '/upload-contract'}`
 
     if (data.urlOnClick && data.urlOnClick.startsWith('http')) {
       url = data.urlOnClick

@@ -1,6 +1,5 @@
 'use client'
 
-import { Configuration } from '@/core/configuration'
 import { AppHeader } from '@/designSystem/ui/AppHeader'
 import { Button, Flex, Form, Input, Typography } from 'antd'
 import { getProviders, signIn } from 'next-auth/react'
@@ -38,11 +37,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     fetchProviders()
-
-    if (Configuration.isDevelopment()) {
-      form.setFieldValue('email', 'test@test.com')
-      form.setFieldValue('password', 'password')
-    }
   }, [])
 
   const fetchProviders = async () => {
@@ -57,7 +51,7 @@ export default function LoginPage() {
 
   const handleProviderSignIn = async provider => {
     setLoading(true)
-    await signIn(provider, { callbackUrl: '/home' })
+    await signIn(provider, { callbackUrl: '/upload-contract' })
   }
 
   const handleSubmit = async (values: any) => {
@@ -67,7 +61,7 @@ export default function LoginPage() {
       await signIn('credentials', {
         email: values.email,
         password: values.password,
-        callbackUrl: '/home',
+        callbackUrl: '/upload-contract',
       })
     } catch (error) {
       enqueueSnackbar(`Could not login: ${error.message}`, { variant: 'error' })
@@ -113,7 +107,12 @@ export default function LoginPage() {
             name="email"
             rules={[{ required: true, message: 'Email is required' }]}
           >
-            <Input type="email" placeholder="Your email" autoComplete="email" />
+            <Input
+              type="email"
+              placeholder="Your email"
+              autoComplete="email"
+              style={{ color: 'white' }}
+            />
           </Form.Item>
 
           <Form.Item
@@ -125,6 +124,7 @@ export default function LoginPage() {
               type="password"
               placeholder="Your password"
               autoComplete="current-password"
+              style={{ color: 'white' }}
             />
           </Form.Item>
 

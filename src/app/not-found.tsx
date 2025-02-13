@@ -8,7 +8,7 @@ export default function NotFound() {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/home')
+    router.push('/upload-contract')
   }, [])
   return <Skeleton />
 }

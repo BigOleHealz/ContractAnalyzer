@@ -1,6 +1,6 @@
 import { RegistrationService } from '@/server/libraries/registration'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient, PushNotification } from '@prisma/client'
 import * as Bcrypt from 'bcryptjs'
 import {
   CookiesOptions,
@@ -25,6 +25,7 @@ declare module 'next-auth' {
     user: {
       id: string
       globalRole: string
+      pushNotifications?: PushNotification[]
     } & DefaultSession['user']
   }
 
@@ -154,6 +155,13 @@ const options: NextAuthOptions = {
 
         if (user) {
           session.user.globalRole = user.globalRole
+
+          // Retrieve subscriptions for the user
+          const pushNotifications = await DatabaseUnprotected.pushNotification.findMany({
+            where: { userId: user.id },
+          })
+
+          session.user.pushNotifications = pushNotifications
         }
       }
       return session
@@ -171,8 +179,6 @@ const options: NextAuthOptions = {
         const existingUser = await DatabaseUnprotected.user.findUnique({
           where: { email },
         });
-
-        console.log("profile: ", profile)
 
         if (!existingUser) {
           await DatabaseUnprotected.user.create({

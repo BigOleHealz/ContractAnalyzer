@@ -32,7 +32,7 @@ export const Logo: React.FC<Props> = ({
           height: `${height}px`,
           ...style,
         }}
-        onClick={() => goTo('/home')}
+        onClick={() => goTo('/upload-contract')}
       />
       {isLabel && (
         <Typography.Title level={4} style={{ margin: '0px' }}>

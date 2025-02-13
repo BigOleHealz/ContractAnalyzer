@@ -4,6 +4,7 @@ import { useUserContext } from '@/core/context'
 import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
+import { Clause } from '@prisma/client'
 import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -14,11 +15,6 @@ import { useRouter } from 'next/navigation'
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
 
-type Clause = {
-  content: string;
-  isImportant: boolean;
-  aiAnalysis: string;
-}
 
 export default function UploadContractPage() {
   const router = useRouter()

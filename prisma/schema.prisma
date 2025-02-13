@@ -125,13 +125,13 @@ model Subscription {
 
 /// @@allow('all', true)
 model SubscriptionTier {
-  id            String         @id() @default(uuid())
-  title         String
-  description   String?
-  monthly       Float
-  yearly        Float
-  features      String[]
-  subscriptions Subscription[] @relation("tier")
-  dateCreated   DateTime       @default(now())
-  dateUpdated   DateTime       @default(now()) @updatedAt()
+  id                String         @id() @default(uuid())
+  title             String
+  description       String?
+  contractsMonthyly Int
+  stripeProductId   String
+  features          String[]
+  subscriptions     Subscription[] @relation("tier")
+  dateCreated       DateTime       @default(now())
+  dateUpdated       DateTime       @default(now()) @updatedAt()
 }

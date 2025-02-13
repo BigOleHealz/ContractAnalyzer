@@ -1,4 +1,4 @@
-import { useUserContext } from '@/core/context'
+import { Api } from '@/core/trpc'
 import { Flex } from 'antd'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
@@ -16,18 +16,14 @@ export const NavigationLayout: React.FC<Props> = ({ children }) => {
   const pathname = usePathname()
   const params: Record<string, string> = useParams()
 
+
+  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery({}, { initialData: [] })
+
   const goTo = (url: string) => {
     router.push(url)
   }
 
   const items: NavigationItem[] = [
-    {
-      key: '/home',
-      label: 'Home',
-      position: 'topbar',
-
-      onClick: () => goTo('/home'),
-    },
 
     {
       key: '/upload-contract',
@@ -55,7 +51,7 @@ export const NavigationLayout: React.FC<Props> = ({ children }) => {
 
     {
       key: '/pricing',
-      label: 'Pricing',
+      label: subscriptions.length > 0 ? 'Manage Subscription' : 'Pricing',
 
       position: 'topbar',
 

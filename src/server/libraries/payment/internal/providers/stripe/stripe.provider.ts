@@ -123,7 +123,7 @@ export class StripeProvider implements Provider {
       }
 
       if (Utility.isDefined(price?.unit_amount)) {
-        product.price = price.unit_amount / 100 ?? 0
+        product.price = (price.unit_amount ? price.unit_amount / 100 : 0)
         product.currency = price.currency
       }
 
@@ -223,5 +223,19 @@ export class StripeProvider implements Provider {
     }
 
     return price
+  }
+
+  async cancelSubscriptionAtPeriodEnd(
+    subscriptionId: string
+  ): Promise<StripeSDK.Subscription> {
+    try {
+      const subscription = await this.client.subscriptions.update(subscriptionId, {
+        cancel_at_period_end: true,
+      });
+      return subscription;
+    } catch (error) {
+      console.error(`Failed to cancel subscription: ${error.message}`);
+      throw error;
+    }
   }
 }

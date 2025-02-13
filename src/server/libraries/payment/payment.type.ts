@@ -29,6 +29,11 @@ export type Product = {
   currency: string
 }
 
+export type ProductFormatted = Product & {
+  features: string[],
+  highlight?: boolean
+}
+
 export type StripeWebhookResponse = {
   userId: string
 

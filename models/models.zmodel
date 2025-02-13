@@ -131,8 +131,8 @@ model SubscriptionTier {
   id          String   @id() @default(uuid())
   title        String
   description String?
-  monthly Float
-  yearly  Float
+  contractsMonthyly Int
+  stripeProductId String
   features    String[]
   subscriptions Subscription[] @relation("tier")
 
