@@ -1,4 +1,3 @@
-import { Api } from '@/core/trpc'
 import { Flex } from 'antd'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
@@ -12,12 +11,20 @@ interface Props {
 }
 
 export const NavigationLayout: React.FC<Props> = ({ children }) => {
+  const { user } = useUserContext()
+
   const router = useRouter()
   const pathname = usePathname()
   const params: Record<string, string> = useParams()
 
 
-  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery({}, { initialData: [] })
+  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery({
+    where: {
+      userId: user?.id,
+      dateExpired: { gt: currentDate },
+      status: 'active'
+    },
+  }, { initialData: [] })
 
   const goTo = (url: string) => {
     router.push(url)
@@ -31,14 +38,6 @@ export const NavigationLayout: React.FC<Props> = ({ children }) => {
       position: 'topbar',
 
       onClick: () => goTo('/upload-contract'),
-    },
-
-    {
-      key: '/analysis-results',
-      label: 'Analysis Results',
-      position: 'topbar',
-
-      onClick: () => goTo('/analysis-results'),
     },
 
     {

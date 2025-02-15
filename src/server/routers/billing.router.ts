@@ -95,6 +95,31 @@ export const BillingRouter = Trpc.createRouter({
 
       return { url }
     }),
+
+  cancelSubscriptionAtPeriodEnd: Trpc.procedure
+    .input(z.object({
+      subscriptionId: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      checkStripeNotActive();
+
+      const userId = ctx.session?.user?.id;
+      const user = await ctx.database.user.findFirstOrThrow({
+        where: { id: userId },
+      });
+
+      checkCustomerId(user);
+
+      try {
+        const subscription = await PaymentService.cancelSubscriptionAtPeriodEnd(input.subscriptionId);
+        return subscription;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Failed to cancel subscription: ${error.message}`,
+        });
+      }
+    }),
 })
 
 const checkStripeNotActive = () => {

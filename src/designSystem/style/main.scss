@@ -81,3 +81,14 @@ body {
   border: 1px solid #00a1ec !important;
 }
 
+.cancel-button {
+  background-color: transparent;
+  color: red;
+  border-color: red;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: red !important;
+  color: black !important;
+}

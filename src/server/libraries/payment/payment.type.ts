@@ -1,7 +1,10 @@
 import { Stripe as StripeSDK } from 'stripe'
 
 export type Subscription = {
+  subscriptionId: string
   productId: string
+  cancelAt: string
+  cancelAtPeriodEnd: boolean
   dateExpired: string
   status: string
 }
@@ -27,6 +30,7 @@ export type Product = {
   interval?: string
   coverUrl?: string
   currency: string
+  metadata: Record<string, string>
 }
 
 export type ProductFormatted = Product & {

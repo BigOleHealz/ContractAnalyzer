@@ -1,160 +1,126 @@
 'use client'
 
+import { useUserContext } from '@/core/context'
 import { Button, Card, Col, Empty, Flex, Row, Spin, Tag, Typography } from 'antd'
 
 import { Api } from '@/core/trpc/internal/trpc.client'
 import { PageLayout } from '@/designSystem'
 import { Product, Subscription } from '@/server/libraries/payment/payment.type'
-import { useEffect, useState } from 'react'
+import { CheckCircleFilled } from '@ant-design/icons'
+import { enqueueSnackbar } from 'notistack'
+import { useMemo } from 'react'
 
 export default function PricingPage() {
-  const [subscriptionsFiltered, setSubscriptionsFiltered] = useState<Subscription[]>([])
+  const { user } = useUserContext()
+
+  const currentDate = useMemo(() => new Date(), [])
 
   const { data: products = [], isLoading: isLoadingProducts } = Api.billing.findManyProducts.useQuery({}, { initialData: [] })
   const { mutateAsync: createPaymentLink } = Api.billing.createPaymentLink.useMutation()
-  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery({}, { initialData: [] })
+  const { mutateAsync: cancelSubscription } = Api.billing.cancelSubscriptionAtPeriodEnd.useMutation()
+  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery({
+    where: {
+      userId: user?.id,
+      dateExpired: { gt: currentDate },
+      status: 'active'
+    },
+  }, { initialData: [] })
 
-  const handleClick = async (product: Product) => {
-    const { url } = await createPaymentLink({ productId: product.id })
-    window.open(url, '_blank')
-  }
+  // Check if the user is subscribed to a product
+  const isSubscribed = (product: Product) => subscriptions.some(sub => sub.productId === product.id)
 
-  const handleCancelSubscription = async () => {
-    // Logic to cancel the subscription
-    console.log('Cancel subscription logic goes here')
-  }
+  const getPrice = (product: Product) => `$${product.price}`
 
-  const getPrice = (product: Product) => {
-    if (product.price === 0) {
-      return 'Free'
+  // Handle new subscription
+  const handleSubscribe = async (product: Product) => {
+    if (isSubscribed(product)) {
+      enqueueSnackbar('You are already subscribed to this product', { variant: 'warning' })
+      return
     }
 
-    const mapping = {
-      usd: '${{price}}',
+    try {
+      const { url } = await createPaymentLink({ productId: product.id })
+      window.open(url, '_blank')
+    } catch (error) {
+      enqueueSnackbar('Failed to create payment link', { variant: 'error' })
     }
-
-    const pattern = mapping[product.currency]
-
-    if (pattern) {
-      return pattern.replace('{{price}}', product.price)
-    }
-
-    return `${product.currency.toUpperCase()} ${product.price}`
   }
 
-  const isSubscribed = (product: Product) => {
-    return subscriptions.some(
-      (subscription) => subscription.productId === product.id
-    )
-  }
+  // Handle cancel subscription
+  const handleCancelSubscription = async (subscription: Subscription) => {
+    try {
+      if (subscription.cancelAtPeriodEnd) {
+        enqueueSnackbar('Subscription already canceled', { variant: 'warning' })
+        return
+      }
 
-  useEffect(() => {
-    const currentDate = new Date()
-    const subscriptionsFiltered = subscriptions.filter(subscription => new Date(subscription.dateExpired) > currentDate)
-    setSubscriptionsFiltered(subscriptionsFiltered)
-  }, [subscriptions])
+      await cancelSubscription({ subscriptionId: subscription.subscriptionId })
+      enqueueSnackbar('Subscription canceled', { variant: 'success' })
+    } catch (error) {
+      enqueueSnackbar('Error canceling subscription', { variant: 'error' })
+    }
+  }
 
   return (
     <PageLayout isCentered>
       <Row gutter={[16, 16]} justify="center">
-        {products.length === 0 && isLoadingProducts && <Spin />}
-
-        {products.length === 0 && !isLoadingProducts && (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="No products found on Stripe"
-          />
-        )}
-
-        {products.length > 0 && products.map((product) => (
-          <Col key={product.id} xs={24} sm={24} md={8} lg={8} xl={8}>
-            <Card
-              style={{ height: '100%', overflow: 'hidden' }}
-              hoverable
-              onClick={() => handleClick(product)}
-              cover={
-                <Flex
-                  style={{
-                    position: 'relative',
-                    height: '40vh',
-                    width: '100%',
-                    overflow: 'hidden',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderTopLeftRadius: '10px',
-                    borderTopRightRadius: '10px',
-                  }}
-                >
-                  <img
-                    src={product.coverUrl}
-                    alt={product.name}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      height: '100%',
-                      width: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
+        {isLoadingProducts ? <Spin /> : products.length === 0 ? (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No products found on Stripe" />
+        ) : (
+          products.map((product) => (
+            <Col key={product.id} xs={24} sm={24} md={8} lg={8} xl={8}>
+              <Card className="product-card" hoverable onClick={() => handleSubscribe(product)}>
+                <Flex className="product-image-container">
+                  <img className="product-image" src={product.coverUrl} alt={product.name} />
                 </Flex>
-              }
-            >
-              <Flex vertical gap={10}>
-                <Typography.Title level={3} style={{ margin: 0 }}>
-                  {product.name}
-                </Typography.Title>
-              </Flex>
 
-              <Flex align="center">
-                <Typography.Title level={1} style={{ margin: 0 }}>
-                  {getPrice(product)}
-                </Typography.Title>
-                {product.interval && (
-                  <Typography.Text className="ml-1">
-                    / {product.interval}
-                  </Typography.Text>
+                <Flex vertical gap={10}>
+                  <Typography.Title level={3} style={{ margin: 0 }}>
+                    {product.name}
+                  </Typography.Title>
+                </Flex>
+
+                <Flex align="center">
+                  <Typography.Title level={1} style={{ margin: 0 }}>
+                    {getPrice(product)}
+                  </Typography.Title>
+                  {product.interval && (
+                    <Typography.Text className="ml-1">/ {product.interval}</Typography.Text>
+                  )}
+                  {isSubscribed(product) && (
+                    <Tag color={subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ? "warning" : "success"}>
+                      {subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ?
+                        "Will cancel on: " + new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(subscriptions.find(sub => sub.productId === product.id)?.cancelAt))
+                        : "Active"}
+                    </Tag>
+                  )}
+                </Flex>
+
+                <Typography.Text className="text-muted">{product.description}</Typography.Text>
+
+                <ul className="feature-list">
+                  {product.metadata.features.split(',').map((feature, idx) => (
+                    <li key={idx} className="feature-item">
+                      <CheckCircleFilled className="icon" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {isSubscribed(product) && (
+                  <Flex justify="center" align="center" className="mt-4" style={{ zIndex: 1000 }}>
+                    <Button className="cancel-button" onClick={(event) => {
+                      event.stopPropagation()
+                      handleCancelSubscription(subscriptions.find(sub => sub.productId === product.id)!)
+                    }
+                    }>
+                      Cancel my subscription
+                    </Button>
+                  </Flex>
                 )}
-              </Flex>
-
-              {isSubscribed(product) && (
-                <div>
-                  <Tag color="success">Active</Tag>
-                </div>
-              )}
-
-              <Typography.Text type="secondary">
-                {product.description}
-              </Typography.Text>
-
-              {/* <ul className="grid mt-8 text-left gap-y-4">
-                {product.features.map((item, idx) => (
-                  <li
-                    key={idx + 'pricingfeature'}
-                    className="flex items-start gap-3 text-slate-600 dark:text-slate-400"
-                  >
-                    <CheckCircleFilled className="w-6 h-6" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul> */}
-            </Card>
-          </Col>
-        ))}
-        {subscriptionsFiltered.length > 0 && (
-          <Flex justify="start">
-            <Button
-              type="primary"
-              onClick={handleCancelSubscription}
-              style={{
-                backgroundColor: 'transparent',
-                color: 'red',
-                borderColor: 'red',
-              }}
-            >
-              Cancel my subscription
-            </Button>
-          </Flex>
+              </Card>
+            </Col>
+          ))
         )}
       </Row>
     </PageLayout>

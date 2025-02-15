@@ -14,16 +14,16 @@ INSERT INTO "User" (
   "name", 
   "globalRole",
   "pictureurl", 
-
-"password"
+  "password",
+  "freeUsageUsed"
 ) VALUES (
   '21a857f1-ba5f-4435-bcf6-f910ec07c0dc',
   'test@test.com',
   'John Doe',
   'ADMIN',
   'https://i.imgur.com/sdjqd62.jpeg',
-
-'$2b$10$ppubsZypHzkqW9dkhMB97ul2.wSsvaCoDE2CzqIHygddRMKXvpYUC'
+  '$2b$10$ppubsZypHzkqW9dkhMB97ul2.wSsvaCoDE2CzqIHygddRMKXvpYUC',
+  false
 );
   `
 

@@ -5,13 +5,13 @@ model Contract {
     fileUrl      String?          
     status        String?          
 
-userId        String          
+    userId        String          
     user            User?            @relation(fields: [userId], references: [id], name:"user")  
  
     clauses      Clause[]    @relation("contract")  
-      dateCreated DateTime @default(now())
-      dateUpdated DateTime @updatedAt  @default(now())
-      @@allow("all", true)
+    dateCreated DateTime @default(now())
+    dateUpdated DateTime @updatedAt  @default(now())
+    @@allow("all", true)
 }
 
 model Clause {
@@ -49,6 +49,7 @@ model User {
     // this is the role of the user for the application
     globalRole        String             @default('USER')
     password          String?            @password @omit
+    freeUsageUsed     Boolean            @default(false)
     dateCreated       DateTime           @default(now())
     dateUpdated       DateTime           @updatedAt @default(now())
     accounts          Account[]

@@ -60,6 +60,7 @@ model User {
   /// @password
   /// @omit
   password          String?
+  freeUsageUsed     Boolean            @default(false)
   dateCreated       DateTime           @default(now())
   dateUpdated       DateTime           @default(now()) @updatedAt()
   accounts          Account[]

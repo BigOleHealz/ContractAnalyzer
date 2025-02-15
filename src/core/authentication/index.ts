@@ -25,6 +25,8 @@ declare module 'next-auth' {
     user: {
       id: string
       globalRole: string
+      stripeCustomerId?: string
+      freeUsageUsed?: boolean
       pushNotifications?: PushNotification[]
     } & DefaultSession['user']
   }
@@ -155,6 +157,8 @@ const options: NextAuthOptions = {
 
         if (user) {
           session.user.globalRole = user.globalRole
+          session.user.stripeCustomerId = user.stripeCustomerId
+          session.user.freeUsageUsed = user.freeUsageUsed
 
           // Retrieve subscriptions for the user
           const pushNotifications = await DatabaseUnprotected.pushNotification.findMany({

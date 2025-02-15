@@ -59,7 +59,10 @@ export class StripeProvider implements Provider {
 
     for (const subscription of response.data) {
       subscriptions.push({
+        subscriptionId: subscription.id,
         productId: subscription.items?.data?.[0].price?.product,
+        cancelAt: new Date(subscription.cancel_at * 1000),
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
         dateExpired: new Date(subscription.current_period_end * 1000),
         status: subscription.status,
       })
@@ -113,6 +116,7 @@ export class StripeProvider implements Provider {
         description: item.description,
         currency: 'usd',
         coverUrl: item.images[0] ?? 'https://i.imgur.com/iQyYgUS.jpeg',
+        metadata: item.metadata,
       }
 
       const price = item.default_price as StripeSDK.Price

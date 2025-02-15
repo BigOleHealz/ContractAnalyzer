@@ -1,4 +1,5 @@
 import { User } from '@prisma/client'
+import { Stripe as StripeSDK } from 'stripe'
 import { Provider } from './internal/providers/provider'
 import { StripeProvider } from './internal/providers/stripe/stripe.provider'
 import {
@@ -61,6 +62,10 @@ class Service {
 
       email: customer.email,
     })
+  }
+
+  async cancelSubscriptionAtPeriodEnd(subscriptionId: string): Promise<StripeSDK.Subscription> {
+    return this.provider.cancelSubscriptionAtPeriodEnd(subscriptionId)
   }
 }
 

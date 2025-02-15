@@ -1,3 +1,4 @@
+import { Stripe as StripeSDK } from 'stripe'
 import {
   Payment,
   Product,
@@ -20,4 +21,5 @@ export interface Provider {
   findManyProducts(): Promise<Product[]>
   onPayment(body: Buffer, sig: string): Promise<StripeWebhookResponse>
   isActive(): boolean
+  cancelSubscriptionAtPeriodEnd(subscriptionId: string): Promise<StripeSDK.Subscription>
 }

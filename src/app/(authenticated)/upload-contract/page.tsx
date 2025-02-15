@@ -7,7 +7,7 @@ import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
 import { Clause } from '@prisma/client'
 import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Utility } from '@/core/helpers/utility'
 import { useRouter } from 'next/navigation'
@@ -24,11 +24,19 @@ export default function UploadContractPage() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false)
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState<string>('')
+  const [isFreeUsageUsed, setIsFreeUsageUsed] = useState<boolean>(user?.freeUsageUsed || false)
+  const [contractUploadsLeft, setContractUploadsLeft] = useState<number>(0)
+
 
   const { mutateAsync: generateText } = Api.ai.generateText.useMutation()
   const { mutateAsync: createContract } = Api.contract.create.useMutation()
   const { mutateAsync: updateContract } = Api.contract.update.useMutation()
   const { mutateAsync: createManyClauses } = Api.clause.createMany.useMutation()
+  const { mutateAsync: updateUser } = Api.user.update.useMutation()
+
+  useEffect(() => {
+    setIsFreeUsageUsed(user?.freeUsageUsed)
+  }, [user])
 
   const handleFileUpload = async (file: File) => {
     try {
@@ -48,6 +56,11 @@ export default function UploadContractPage() {
 
     if (!file && !rawText) {
       enqueueSnackbar('Please upload a file or enter raw text', { variant: 'error' })
+      return
+    }
+
+    if (isFreeUsageUsed) {
+      enqueueSnackbar('You have used your free usage limit. Please upgrade your plan to continue.', { variant: 'error' })
       return
     }
 
@@ -90,6 +103,13 @@ export default function UploadContractPage() {
           },
         })
 
+        await updateUser({
+          where: { id: user.id },
+          data: {
+            freeUsageUsed: true,
+          },
+        })
+
         setIsProcessing(false)
         router.push(`/analysis-results?contractId=${contract.id}`)
       }
@@ -109,6 +129,12 @@ export default function UploadContractPage() {
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Title level={2}>Upload Contract for Analysis</Title>
         <Paragraph>Upload a PDF contract file or input raw text to have it analyzed for important clauses.</Paragraph>
+
+        {isFreeUsageUsed && (
+          <Paragraph className='text-red-500 font-bold'>
+            You have used your free usage limit. Please upgrade your plan to continue.
+          </Paragraph>
+        )}
 
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
           <Upload

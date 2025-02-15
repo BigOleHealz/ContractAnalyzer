@@ -97,14 +97,6 @@ export default function ProfilePage() {
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: 'Email is required' }]}
-        >
-          <Input type="email" placeholder="Your email" autoComplete="email" />
-        </Form.Item>
-
         <Form.Item label="Profile picture" name="pictureurl">
           <Input />
         </Form.Item>
