@@ -5,6 +5,7 @@ export type Subscription = {
   productId: string
   cancelAt: string
   cancelAtPeriodEnd: boolean
+  currentPeriodStart: number
   dateExpired: string
   status: string
 }

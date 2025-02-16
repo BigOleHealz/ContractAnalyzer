@@ -63,6 +63,7 @@ export class StripeProvider implements Provider {
         productId: subscription.items?.data?.[0].price?.product,
         cancelAt: new Date(subscription.cancel_at * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
         dateExpired: new Date(subscription.current_period_end * 1000),
         status: subscription.status,
       })

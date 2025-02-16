@@ -62,22 +62,31 @@ export default function PricingPage() {
   }
 
   return (
-    <PageLayout isCentered>
+    <PageLayout isCentered style={{ padding: '5rem 10rem' }}>
       <Row gutter={[16, 16]} justify="center">
         {isLoadingProducts ? <Spin /> : products.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No products found on Stripe" />
         ) : (
           products.map((product) => (
-            <Col key={product.id} xs={24} sm={24} md={8} lg={8} xl={8}>
-              <Card className="product-card" hoverable onClick={() => handleSubscribe(product)}>
+            <Col key={product.id} xs={24} sm={24} md={8} lg={8} xl={8} style={{ display: 'flex' }}>
+              <Card className="product-card" hoverable onClick={() => handleSubscribe(product)} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Flex className="product-image-container">
                   <img className="product-image" src={product.coverUrl} alt={product.name} />
                 </Flex>
 
-                <Flex vertical gap={10}>
-                  <Typography.Title level={3} style={{ margin: 0 }}>
-                    {product.name}
-                  </Typography.Title>
+                <Flex vertical gap={10} className="flex-1" style={{ marginTop: '1rem' }}>
+                  <Flex justify="space-between" align="center" wrap="wrap">
+                    <Typography.Title level={3} style={{ margin: 0, color: '#8BA5B6' }}>
+                      {product.name}
+                    </Typography.Title>
+                    {isSubscribed(product) && (
+                      <Tag color={subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ? "warning" : "success"}>
+                        {subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ?
+                          "Will cancel on: " + new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(subscriptions.find(sub => sub.productId === product.id)?.cancelAt))
+                          : "Active"}
+                      </Tag>
+                    )}
+                  </Flex>
                 </Flex>
 
                 <Flex align="center">
@@ -85,29 +94,22 @@ export default function PricingPage() {
                     {getPrice(product)}
                   </Typography.Title>
                   {product.interval && (
-                    <Typography.Text className="ml-1">/ {product.interval}</Typography.Text>
-                  )}
-                  {isSubscribed(product) && (
-                    <Tag color={subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ? "warning" : "success"}>
-                      {subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd ?
-                        "Will cancel on: " + new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(subscriptions.find(sub => sub.productId === product.id)?.cancelAt))
-                        : "Active"}
-                    </Tag>
+                    <Typography.Text className="ml-1 text-slate-400" >/ {product.interval}</Typography.Text>
                   )}
                 </Flex>
 
-                <Typography.Text className="text-muted">{product.description}</Typography.Text>
+                <Typography.Text className="text-muted text-slate-400">{product.description}</Typography.Text>
 
-                <ul className="feature-list">
+                <ul className="feature-list" style={{ marginTop: '0.5rem' }}>
                   {product.metadata.features.split(',').map((feature, idx) => (
-                    <li key={idx} className="feature-item">
-                      <CheckCircleFilled className="icon" />
+                    <li key={idx} className="flex items-start gap-3 text-slate-400 dark:text-slate-400">
+                      <CheckCircleFilled className="w-6 h-6" />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                {isSubscribed(product) && (
+                {isSubscribed(product) && !subscriptions.find(sub => sub.productId === product.id)?.cancelAtPeriodEnd && (
                   <Flex justify="center" align="center" className="mt-4" style={{ zIndex: 1000 }}>
                     <Button className="cancel-button" onClick={(event) => {
                       event.stopPropagation()

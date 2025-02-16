@@ -1,6 +1,9 @@
 import { Flex } from 'antd'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
+
+import { useUserContext } from '@/core/context'
+import { Api } from '@/core/trpc'
 import { Leftbar } from './components/Leftbar'
 import { Mobilebar } from './components/Mobilebar'
 import { Topbar } from './components/Topbar'
@@ -12,6 +15,8 @@ interface Props {
 
 export const NavigationLayout: React.FC<Props> = ({ children }) => {
   const { user } = useUserContext()
+
+  const currentDate = useMemo(() => new Date(), [])
 
   const router = useRouter()
   const pathname = usePathname()
@@ -51,7 +56,6 @@ export const NavigationLayout: React.FC<Props> = ({ children }) => {
     {
       key: '/pricing',
       label: subscriptions.length > 0 ? 'Manage Subscription' : 'Pricing',
-
       position: 'topbar',
 
       onClick: () => goTo('/pricing'),
