@@ -8,6 +8,7 @@ import createPushNotificationRouter from "./PushNotification.router";
 import createAccountRouter from "./Account.router";
 import createSessionRouter from "./Session.router";
 import createSubscriptionRouter from "./Subscription.router";
+import createSubscriptionTierRouter from "./SubscriptionTier.router";
 import { ClientType as ContractClientType } from "./Contract.router";
 import { ClientType as ClauseClientType } from "./Clause.router";
 import { ClientType as UserClientType } from "./User.router";
@@ -47,7 +48,9 @@ export function createRouter<Config extends BaseConfig>(router: RouterFactory<Co
         account: createAccountRouter(router, procedure),
         session: createSessionRouter(router, procedure),
         subscription: createSubscriptionRouter(router, procedure),
-    });
+        subscriptionTier: createSubscriptionTierRouter(router, procedure),
+    }
+    );
 }
 
 export interface ClientType<AppRouter extends AnyRouter> {

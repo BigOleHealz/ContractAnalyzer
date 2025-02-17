@@ -62,7 +62,7 @@ export default function PricingPage() {
   }
 
   return (
-    <PageLayout isCentered style={{ padding: '5rem 10rem' }}>
+    <PageLayout isCentered>
       <Row gutter={[16, 16]} justify="center">
         {isLoadingProducts ? <Spin /> : products.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No products found on Stripe" />
