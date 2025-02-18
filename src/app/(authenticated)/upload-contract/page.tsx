@@ -8,7 +8,6 @@ import { Clause } from '@prisma/client'
 import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
-import { useUploadPublic } from '@/core/hooks/upload'
 import { Utility } from '@/core/helpers/utility'
 import { useRouter } from 'next/navigation'
 
@@ -37,16 +36,14 @@ export default function UploadContractPage() {
 
   const getPrompt = (text: string) => `
     Analyze the following contract and return the result as a JSON array.
-    Each object in the array should represent a clause with these fields:
-    - **content**
-    - **isImportant**
-    - **aiAnalysis**
-    
-    Highlight the notable clauses and risks:
-    \`${text}\`.
-
-    Translate the legal jargon into verbiage that a regular person can understand.
-  `
+    Each object in the array should represent a clause with the following fields:
+      content,
+      isImportant,
+      and aiAnalysis.
+      Highlight the notable clauses and risks:
+        \`${text}\`.
+      Translate the legal jargon into verbiage that a regular person can understand.
+    `
 
   const extractTextFromPdf = async (file: File) => {
     try {
@@ -93,24 +90,24 @@ export default function UploadContractPage() {
     }
 
     setIsProcessing(true)
+
+    let contentToAnalyze = rawText
+    if (file) {
+      contentToAnalyze = await extractTextFromPdf(file)
+      if (!contentToAnalyze) throw new Error('Text extraction failed')
+    }
+
     try {
       // Create contract entry in DB
       const contract = await createContract({
         data: {
           userId: user.id,
           fileUrl: file?.name || undefined,
-          content: rawText || undefined,
+          content: contentToAnalyze || undefined,
           status: 'pending'
         }
       })
       enqueueSnackbar('Contract submitted for analysis', { variant: 'success' })
-
-      let contentToAnalyze = rawText
-
-      if (file) {
-        contentToAnalyze = await extractTextFromPdf(file)
-        if (!contentToAnalyze) throw new Error('Text extraction failed')
-      }
 
       const clauses = await analyzeText(contentToAnalyze)
       if (!clauses) throw new Error('Analysis failed')
