@@ -8,116 +8,127 @@ import { Clause } from '@prisma/client'
 import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
-
+import { useUploadPublic } from '@/core/hooks/upload'
 import { Utility } from '@/core/helpers/utility'
 import { useRouter } from 'next/navigation'
 
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
 
-
 export default function UploadContractPage() {
   const router = useRouter()
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
 
-  const [isProcessing, setIsProcessing] = useState<boolean>(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [file, setFile] = useState<File | null>(null)
-  const [rawText, setRawText] = useState<string>('')
-  const [isFreeUsageUsed, setIsFreeUsageUsed] = useState<boolean>(user?.freeUsageUsed || false)
-  const [contractUploadsLeft, setContractUploadsLeft] = useState<number>(0)
+  const [rawText, setRawText] = useState('')
+  const [isFreeUsageUsed, setIsFreeUsageUsed] = useState(user?.freeUsageUsed || false)
 
-
-  const { mutateAsync: generateText } = Api.ai.generateText.useMutation()
   const { mutateAsync: createContract } = Api.contract.create.useMutation()
   const { mutateAsync: updateContract } = Api.contract.update.useMutation()
   const { mutateAsync: createManyClauses } = Api.clause.createMany.useMutation()
   const { mutateAsync: updateUser } = Api.user.update.useMutation()
+  const { mutateAsync: generateText } = Api.ai.generateText.useMutation()
 
   useEffect(() => {
     setIsFreeUsageUsed(user?.freeUsageUsed)
   }, [user])
 
-  const handleFileUpload = async (file: File) => {
-    try {
-      setFile(file)
+  const getPrompt = (text: string) => `
+    Analyze the following contract and return the result as a JSON array.
+    Each object in the array should represent a clause with these fields:
+    - **content**
+    - **isImportant**
+    - **aiAnalysis**
+    
+    Highlight the notable clauses and risks:
+    \`${text}\`.
 
-      enqueueSnackbar('File uploaded and text extracted successfully', { variant: 'success' })
+    Translate the legal jargon into verbiage that a regular person can understand.
+  `
+
+  const extractTextFromPdf = async (file: File) => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/extract-text`, {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!response.ok) throw new Error('Failed to extract text')
+
+      const data = await response.json()
+      return data.text
     } catch (error) {
+      console.error('Error extracting text from PDF:', error)
       enqueueSnackbar('Error extracting text from PDF', { variant: 'error' })
+      return null
     }
   }
 
+  const analyzeText = async (text: string) => {
+    try {
+      const { analysis } = await generateText({ prompt: getPrompt(text) })
+      return JSON.parse(Utility.removeJsonTags(analysis))
+    } catch (error) {
+      console.error('Error analyzing contract:', error)
+      enqueueSnackbar('Error analyzing contract', { variant: 'error' })
+      return null
+    }
+  }
+
+  const handleFileChange = async (file: File) => {
+    setFile(file)
+    enqueueSnackbar('File uploaded successfully', { variant: 'success' })
+  }
+
   const handleSubmit = async () => {
-    if (!user?.id) {
-      enqueueSnackbar('User not authenticated', { variant: 'error' })
-      return
-    }
-
-    if (!file && !rawText) {
-      enqueueSnackbar('Please upload a file or enter raw text', { variant: 'error' })
-      return
-    }
-
-    if (isFreeUsageUsed) {
-      enqueueSnackbar('You have used your free usage limit. Please upgrade your plan to continue.', { variant: 'error' })
-      return
+    if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' })
+    if (!file && !rawText) return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' })
+    if (isFreeUsageUsed && user?.globalRole !== 'ADMIN') {
+      return enqueueSnackbar('Free usage limit reached. Upgrade your plan.', { variant: 'error' })
     }
 
     setIsProcessing(true)
-
     try {
+      // Create contract entry in DB
       const contract = await createContract({
         data: {
           userId: user.id,
           fileUrl: file?.name || undefined,
           content: rawText || undefined,
-          status: 'pending',
-        },
+          status: 'pending'
+        }
       })
       enqueueSnackbar('Contract submitted for analysis', { variant: 'success' })
 
-      // Send the rawText to OpenAI API
-      if (rawText) {
-        const prompt = `Analyze the following contract and return the result as a JSON array. Each object in the array should represent a clause with the following fields: content, isImportant, and aiAnalysis. Highlight the notable clauses and risks: \`${rawText}\`.
-                        Translate the legal jargon into verbiage that a regular person can understand.`
-        const { analysis } = await generateText({
-          prompt: prompt,
-        })
-        const formattedAnalysisResult = Utility.removeJsonTags(analysis);
-        const clauses = JSON.parse(formattedAnalysisResult)
+      let contentToAnalyze = rawText
 
-        // Insert clauses into the database
-        await createManyClauses({
-          data: (clauses as Clause[]).map((clause: Clause) => ({
-            ...clause,
-            contractId: contract.id,
-          })),
-        })
-
-        // Update the contract status to completed
-        await updateContract({
-          where: { id: contract.id },
-          data: {
-            status: 'completed',
-          },
-        })
-
-        await updateUser({
-          where: { id: user.id },
-          data: {
-            freeUsageUsed: true,
-          },
-        })
-
-        setIsProcessing(false)
-        router.push(`/analysis-results?contractId=${contract.id}`)
+      if (file) {
+        contentToAnalyze = await extractTextFromPdf(file)
+        if (!contentToAnalyze) throw new Error('Text extraction failed')
       }
 
+      const clauses = await analyzeText(contentToAnalyze)
+      if (!clauses) throw new Error('Analysis failed')
+
+      await createManyClauses({
+        data: clauses.map((clause: Clause) => ({ ...clause, contractId: contract.id }))
+      })
+
+      // Update contract status
+      await updateContract({ where: { id: contract.id }, data: { status: 'completed' } })
+      await updateUser({ where: { id: user.id }, data: { freeUsageUsed: true } })
+
+      router.push(`/analysis-results?contractId=${contract.id}`)
     } catch (error) {
       console.error('Error submitting contract', error)
-      setIsProcessing(false)
       enqueueSnackbar('Error submitting contract', { variant: 'error' })
+    } finally {
+      setIsProcessing(false)
     }
   }
 
@@ -140,21 +151,25 @@ export default function UploadContractPage() {
           <Upload
             accept=".pdf"
             beforeUpload={file => {
-              handleFileUpload(file)
+              handleFileChange(file)
               return false
             }}
             fileList={file ? [{ uid: '-1', name: file.name, status: 'done', url: file.name }] : []}
           >
-            <Button icon={<UploadOutlined />}>
-              Click to Upload PDF
-            </Button>
+            <Button icon={<UploadOutlined />}>Click to Upload PDF</Button>
           </Upload>
 
           <Paragraph>Or</Paragraph>
 
-          <TextArea rows={6} placeholder="Enter raw contract text here" value={rawText} onChange={e => setRawText(e.target.value)} disabled={file !== null} />
+          <TextArea
+            rows={6}
+            placeholder="Enter raw contract text here"
+            value={rawText}
+            onChange={e => setRawText(e.target.value)}
+            disabled={!!file}
+          />
 
-          <Button type="primary" icon={<FileTextOutlined />} onClick={handleSubmit} disabled={(!file && !rawText)}>
+          <Button type="primary" icon={<FileTextOutlined />} onClick={handleSubmit} disabled={!file && !rawText}>
             Submit for Analysis
           </Button>
         </Space>

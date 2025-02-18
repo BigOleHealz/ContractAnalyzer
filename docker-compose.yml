@@ -1,5 +1,13 @@
 version: '3.8'
 services:
+  pdf-extractor:
+    build: ./pdf-service
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./pdf-service:/app
+    restart: always
+
   mail:
     container_name: mail
     image: axllent/mailpit
