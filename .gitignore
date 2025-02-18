@@ -60,3 +60,6 @@ yarn-error.log*
 **/public/workbox-*.map
 **/public/worker-*.js
 certificates
+
+
+pdf-service/.venv*
