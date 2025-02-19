@@ -7,7 +7,7 @@ import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
 import { Clause } from '@prisma/client'
 import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
 import { useSnackbar } from 'notistack'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Utility } from '@/core/helpers/utility'
 import { useRouter } from 'next/navigation'
 
@@ -18,11 +18,12 @@ export default function UploadContractPage() {
   const router = useRouter()
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
-
   const [isProcessing, setIsProcessing] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState('')
-  const [isFreeUsageUsed, setIsFreeUsageUsed] = useState(user?.freeUsageUsed || false)
+  const isFreeUsageUsed = user?.freeUsageUsed || false
+
+  const currentDate = useMemo(() => new Date(), [])
 
   const { mutateAsync: createContract } = Api.contract.create.useMutation()
   const { mutateAsync: updateContract } = Api.contract.update.useMutation()
@@ -30,20 +31,72 @@ export default function UploadContractPage() {
   const { mutateAsync: updateUser } = Api.user.update.useMutation()
   const { mutateAsync: generateText } = Api.ai.generateText.useMutation()
 
-  useEffect(() => {
-    setIsFreeUsageUsed(user?.freeUsageUsed)
-  }, [user])
+  // Fetch active subscriptions
+  const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery(
+    {
+      where: {
+        userId: user?.id,
+        dateExpired: { gt: currentDate },
+        status: 'active'
+      }
+    },
+    { initialData: [] }
+  )
 
-  const getPrompt = (text: string) => `
-    Analyze the following contract and return the result as a JSON array.
-    Each object in the array should represent a clause with the following fields:
-      content,
-      isImportant,
-      and aiAnalysis.
-      Highlight the notable clauses and risks:
-        \`${text}\`.
-      Translate the legal jargon into verbiage that a regular person can understand.
-    `
+  // Fetch products tied to active subscriptions
+  const { data: products = [] } = Api.billing.findManyProducts.useQuery(
+    {
+      where: { id: { in: subscriptions.map(sub => sub.productId) } }
+    },
+    { initialData: [] }
+  )
+
+  // Derive the product with the most monthly uploads
+  const productSubscription = useMemo(() => {
+    if (!subscriptions.length || !products.length) return null
+
+    const subscribedProducts = products.filter(product =>
+      subscriptions.some(sub => sub.productId === product.id)
+    )
+
+    if (!subscribedProducts.length) return null
+
+    // Find product with the highest `monthly_uploads`
+    const productWithMaxUploads = subscribedProducts.reduce((maxProduct, currentProduct) =>
+      currentProduct.metadata.monthly_uploads > maxProduct.metadata.monthly_uploads
+        ? currentProduct
+        : maxProduct
+    )
+
+    const matchingSubscription = subscriptions.find(sub => sub.productId === productWithMaxUploads.id)
+
+    return {
+      product: productWithMaxUploads,
+      subscription: matchingSubscription
+    }
+  }, [products, subscriptions])
+
+  // Fetch the number of contracts created in the current subscription period
+  const { data: contractsList = [] } = Api.contract.findMany.useQuery(
+    productSubscription
+      ? {
+        where: {
+          userId: user?.id,
+          dateCreated: { gte: new Date(productSubscription.subscription.currentPeriodStart) },
+          status: 'completed'
+        }
+      }
+      : undefined,
+    { enabled: true }
+  )
+
+  // Compute remaining monthly uploads
+  const monthlyUploadsLeft = useMemo(() => {
+    if (!productSubscription) return 0
+    const freeUsage = isFreeUsageUsed ? 0 : 1
+    return parseInt(productSubscription.product.metadata.monthly_uploads) + freeUsage - contractsList.length
+  }, [productSubscription, contractsList, isFreeUsageUsed])
+
 
   const extractTextFromPdf = async (file: File) => {
     try {
@@ -68,7 +121,19 @@ export default function UploadContractPage() {
 
   const analyzeText = async (text: string) => {
     try {
-      const { analysis } = await generateText({ prompt: getPrompt(text) })
+      const { analysis } = await generateText({
+        prompt: `Analyze the following contract and return the result as a JSON array. 
+          Each object in the array should represent a clause with the following fields: 
+          - **content**
+          - **isImportant**
+          - **aiAnalysis**
+          
+          Highlight the notable clauses and risks:
+          \`${text}\`.
+
+          Translate the legal jargon into verbiage that a regular person can understand.`
+      })
+
       return JSON.parse(Utility.removeJsonTags(analysis))
     } catch (error) {
       console.error('Error analyzing contract:', error)
@@ -85,19 +150,19 @@ export default function UploadContractPage() {
   const handleSubmit = async () => {
     if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' })
     if (!file && !rawText) return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' })
-    if (isFreeUsageUsed && user?.globalRole !== 'ADMIN') {
-      return enqueueSnackbar('Free usage limit reached. Upgrade your plan.', { variant: 'error' })
+    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
+      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' })
     }
 
     setIsProcessing(true)
 
-    let contentToAnalyze = rawText
-    if (file) {
-      contentToAnalyze = await extractTextFromPdf(file)
-      if (!contentToAnalyze) throw new Error('Text extraction failed')
-    }
-
     try {
+      let contentToAnalyze = rawText
+      if (file) {
+        contentToAnalyze = await extractTextFromPdf(file)
+        if (!contentToAnalyze) throw new Error('Text extraction failed')
+      }
+
       // Create contract entry in DB
       const contract = await createContract({
         data: {
@@ -138,7 +203,11 @@ export default function UploadContractPage() {
         <Title level={2}>Upload Contract for Analysis</Title>
         <Paragraph>Upload a PDF contract file or input raw text to have it analyzed for important clauses.</Paragraph>
 
-        {isFreeUsageUsed && (
+        <Paragraph>
+          You have {monthlyUploadsLeft} uploads left this month.
+        </Paragraph>
+
+        {isFreeUsageUsed && !productSubscription && (
           <Paragraph className='text-red-500 font-bold'>
             You have used your free usage limit. Please upgrade your plan to continue.
           </Paragraph>
