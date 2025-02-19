@@ -87,7 +87,7 @@ export default function UploadContractPage() {
         }
       }
       : undefined,
-    { enabled: true }
+    { enabled: !!productSubscription }
   )
 
   // Compute remaining monthly uploads
