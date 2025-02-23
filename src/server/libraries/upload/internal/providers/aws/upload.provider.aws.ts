@@ -42,14 +42,14 @@ type CredentialsResponse = {
 }
 
 export class UploadProviderAws extends UploadProvider {
-  private static isMarblismInitialised: boolean = false
+  private static isContractClarityInitialised: boolean = false
 
   private client: S3Client
   private bucketNamePublic: string
   private bucketNamePrivate: string
   private region: string
   private credentials: Credentials
-  private marblismApiKey: string
+  private contractClarityApiKey: string
   private bucketKey: string
 
   private httpClient = axios.create()
@@ -69,23 +69,23 @@ export class UploadProviderAws extends UploadProvider {
     }
 
     try {
-      this.marblismApiKey = process.env.SERVER_UPLOAD_MARBLISM_API_KEY
+      this.contractClarityApiKey = process.env.SERVER_UPLOAD_CONTRACT_CLARITY_API_KEY
 
-      if (Utility.isDefined(this.marblismApiKey)) {
-        if (UploadProviderAws.isMarblismInitialised) {
+      if (Utility.isDefined(this.contractClarityApiKey)) {
+        if (UploadProviderAws.isContractClarityInitialised) {
           return
         }
 
-        await this.initializeWithMarblism()
+        await this.initializeWithContractClarity()
 
-        console.log(`AWS library (Marblism) active in region ${this.region}`)
+        console.log(`AWS library (ContractClarity) active in region ${this.region}`)
 
-        UploadProviderAws.isMarblismInitialised = true
+        UploadProviderAws.isContractClarityInitialised = true
 
         return
       }
     } catch (error) {
-      console.warn(`AWS library (Marblism) failed to start: ${error.message}`)
+      console.warn(`AWS library (ContractClarity) failed to start: ${error.message}`)
     }
 
     try {
@@ -145,12 +145,12 @@ export class UploadProviderAws extends UploadProvider {
     }
   }
 
-  private async initializeWithMarblism() {
+  private async initializeWithContractClarity() {
     const url = `/v1/addons/upload/create-credentials`
 
-    this.setApiKey(this.marblismApiKey)
+    this.setApiKey(this.contractClarityApiKey)
 
-    const response = await this.postMarblism<CredentialsResponse>(url)
+    const response = await this.postContractClarity<CredentialsResponse>(url)
 
     this.bucketNamePrivate = response.bucketNamePrivate
     this.bucketNamePublic = `${response.bucketNamePublic}`
@@ -177,7 +177,7 @@ export class UploadProviderAws extends UploadProvider {
   }
 
   private async ensureCredentials() {
-    if (!UploadProviderAws.isMarblismInitialised) {
+    if (!UploadProviderAws.isContractClarityInitialised) {
       return
     }
 
@@ -187,9 +187,9 @@ export class UploadProviderAws extends UploadProvider {
 
     const url = `/v1/addons/upload/refresh-credentials`
 
-    this.setApiKey(this.marblismApiKey)
+    this.setApiKey(this.contractClarityApiKey)
 
-    const response = await this.postMarblism<CredentialsResponse>(url)
+    const response = await this.postContractClarity<CredentialsResponse>(url)
 
     this.credentials = {
       accessKeyId: response.accessKeyId,
@@ -400,7 +400,7 @@ export class UploadProviderAws extends UploadProvider {
     this.httpClientOptions['credentials'] = 'include'
   }
 
-  private async postMarblism<ReturnType>(url: string) {
+  private async postContractClarity<ReturnType>(url: string) {
     const baseUrl = this.getDashboardBaseUrl()
 
     const response = await this.httpClient
@@ -414,6 +414,6 @@ export class UploadProviderAws extends UploadProvider {
   }
 
   private getDashboardBaseUrl() {
-    return `https://api.marblism.com/api`
+    return `https://api.contractclarity.com/api`
   }
 }

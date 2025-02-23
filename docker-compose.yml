@@ -2,11 +2,15 @@ version: '3.8'
 services:
   pdf-extractor:
     build: ./pdf-service
+    container_name: pdf-extractor
+    image: pdf-extractor
     ports:
       - "5001:5001"
     volumes:
       - ./pdf-service:/app
-    restart: always
+    stdin_open: true  # Equivalent to -it
+    tty: true         # Keeps the container open for interactive processes
+    command: python app.py  # Starts a Bash session inside the container
 
   mail:
     container_name: mail

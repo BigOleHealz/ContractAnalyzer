@@ -77,7 +77,7 @@ const providerMap = providers.map(provider => {
 
 const cookiePrefix = '__Secure-'
 
-const isWorkspace = process.env.PUBLIC_MARBLISM_ENV === 'workspace'
+const isWorkspace = false;
 
 const cookiesForWorkspace: Partial<CookiesOptions> = {
   sessionToken: {

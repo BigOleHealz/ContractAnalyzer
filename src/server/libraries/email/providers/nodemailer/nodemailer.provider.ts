@@ -30,7 +30,7 @@ export class NodemailerProvider implements Provider {
     for (const to of options.to) {
       await this.client
         .sendMail({
-          from: `Marblism <no-reply@marblism.com>`,
+          from: `ContractClarity <no-reply@contractclarity.com>`,
           to: to.email,
           subject: options.subject,
           html: options.content,

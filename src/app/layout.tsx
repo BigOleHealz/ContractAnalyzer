@@ -5,9 +5,9 @@ export const metadata: Metadata = {
   title: 'ContractAnalyzer',
   description: 'ContractAnalyzer',
 
-  generator: 'Marblism',
+  generator: 'ContractClarity',
   manifest: '/manifest.json',
-  keywords: ['marblism', 'next14', 'pwa', 'next-pwa'],
+  keywords: ['contract-clarity', 'next14', 'pwa', 'next-pwa'],
   authors: [],
   icons: {
     icon: '/pwa/icon.png',

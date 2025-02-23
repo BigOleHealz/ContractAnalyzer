@@ -40,7 +40,7 @@ export namespace FileHelper {
   }
 
   export function buildTemporaryPath(path: string): string {
-    const pathTemporary = Path.join(os.tmpdir(), 'marblism-tmp', path)
+    const pathTemporary = Path.join(os.tmpdir(), 'contract-clarity-tmp', path)
     return pathTemporary
   }
 

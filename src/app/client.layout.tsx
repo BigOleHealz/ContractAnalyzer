@@ -1,6 +1,6 @@
 'use client'
 
-import { WorkspaceProvider } from '@/.marblism/workspace'
+import { WorkspaceProvider } from '@/workspace'
 import { AnalyticsProvider } from '@/core/analytics'
 import { UserProvider } from '@/core/context'
 import { TRPCProvider } from '@/core/trpc'

@@ -68,8 +68,8 @@ export class MailjetProvider implements Provider {
     templateId?: number
   } {
     const from = {
-      Email: 'no-reply@marblism.com',
-      Name: 'Marblism',
+      Email: 'no-reply@contractclarity.com',
+      Name: 'ContractClarity',
     }
 
     const to = options.to.map(item => ({ Email: item.email, Name: item.name }))

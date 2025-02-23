@@ -1,10 +1,11 @@
 {
-  "name": "@marblism/nextjs",
+  "name": "@contract-clarity/nextjs",
   "version": "1.0.5",
   "private": true,
   "type": "module",
   "scripts": {
     "init": "pnpm install && pnpm run docker:init ; pnpm run env:init ; pnpm run global:sync ; pnpm run database:seed",
+    "init:dev": "pnpm install && pnpm run docker:init ; pnpm run env:init",
     "dev": "next dev -p 3000",
     "debug": "NODE_OPTIONS='--inspect' next dev -p 3000",
     "build": "pnpm run crud:sync && next build",
@@ -20,7 +21,7 @@
     "database:migration:run": "prisma migrate deploy",
     "database:reset": "prisma db push --force-reset && pnpm run database:seed",
     "database:studio": "prisma studio",
-    "docker:init": "docker compose -p marblism-app up -d",
+    "docker:init": "docker compose -p contract-clarity up -d",
     "env:init": "node scripts/env.js",
     "format": "pnpm run format:code && pnpm run format:models",
     "format:code": "prettier --write \"src/!(*.marblism)/**/*.{ts,tsx}\"",

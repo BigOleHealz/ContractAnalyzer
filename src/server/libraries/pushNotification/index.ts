@@ -9,7 +9,7 @@ class Service {
 
   private setup() {
     try {
-      const email = process.env.WEB_PUSH_EMAIL ?? 'marbler@marblism.com'
+      const email = process.env.WEB_PUSH_EMAIL ?? 'healy@contractclarity.com'
       const keyPublic = process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
       const keyPrivate = process.env.WEB_PUSH_PRIVATE_KEY
 

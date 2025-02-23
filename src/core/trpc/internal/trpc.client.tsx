@@ -1,4 +1,4 @@
-import { createTRPCReact } from '@/.marblism/api/client/react'
+import { createTRPCReact } from '@/api/client/react'
 import { Configuration } from '@/core/configuration'
 import { AppRouter } from '@/server'
 import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
