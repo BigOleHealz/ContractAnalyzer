@@ -4,6 +4,7 @@ import { AiRouter } from './routers/ai.router'
 import { AuthenticationRouter } from './routers/authentication.router'
 import { ConfigurationRouter } from './routers/configuration.router'
 import { EmailRouter } from './routers/email.router'
+import { ParsePdfRouter } from './routers/parsepdf.router'
 
 import { PushNotificationRouter } from './routers/pushNotification.router'
 
@@ -27,6 +28,8 @@ const appRouter = Trpc.mergeRouters(
     pushNotificationRouter: PushNotificationRouter,
 
     upload: UploadRouter,
+
+    parsePdf: ParsePdfRouter,
   }),
 )
 
