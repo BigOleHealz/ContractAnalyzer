@@ -5,7 +5,7 @@ import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
 import { Clause } from '@prisma/client'
-import { Button, Input, Space, Spin, Typography, Upload, Progress } from 'antd'
+import { Button, Input, Space, Typography, Upload, Progress } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -23,7 +23,6 @@ export default function UploadContractPage() {
   const router = useRouter()
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
-  // const [isProcessing, setIsProcessing] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState('')
   const isFreeUsageUsed = user?.freeUsageUsed || false
@@ -65,13 +64,17 @@ export default function UploadContractPage() {
 
   // Derive the product with the most monthly uploads
   const productSubscription = useMemo(() => {
-    if (!subscriptions.length || !products.length) return null
+    if (!subscriptions.length || !products.length) {
+      return null
+    }
 
     const subscribedProducts = products.filter(product =>
       subscriptions.some(sub => sub.productId === product.id)
     )
 
-    if (!subscribedProducts.length) return null
+    if (!subscribedProducts.length) {
+      return null
+    }
 
     // Find product with the highest `monthly_uploads`
     const productWithMaxUploads = subscribedProducts.reduce((maxProduct, currentProduct) =>
@@ -104,13 +107,15 @@ export default function UploadContractPage() {
 
   // Compute remaining monthly uploads
   const monthlyUploadsLeft = useMemo(() => {
-    if (!productSubscription) return 0
+    if (!productSubscription) {
+      return 0
+    }
     const freeUsage = isFreeUsageUsed ? 0 : 1
-    return parseInt(productSubscription.product.metadata.monthly_uploads) + freeUsage - contractsList.length
+    return parseInt(productSubscription.product.metadata.monthly_uploads, 10) + freeUsage - contractsList.length
   }, [productSubscription, contractsList, isFreeUsageUsed])
 
   const isProcessing = useMemo(() => {
-    return Object.values(transactionState).every(state => state);
+    return Object.values(transactionState).some(state => state);
   }, [transactionState]);
 
 
@@ -140,7 +145,7 @@ export default function UploadContractPage() {
 
     const formData = new FormData()
     formData.append('prompt', prompt)
-    
+
     let apiEndpoint;
     if (file) {
       formData.append('file', file)
@@ -149,23 +154,21 @@ export default function UploadContractPage() {
       apiEndpoint = '/api/gemini/text'
     }
 
-    return fetch(apiEndpoint, {
-      method: "POST",
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Clauses: ", data.clauses)
-        return { success: true, payload: data.clauses }
-      })
-      .catch(error => {
-        console.error('Error submitting contract', error);
-        return { success: false, payload: error.message }
-      })
-      .finally(() => {
-        setTransactionState(prevState => ({ ...prevState, waitingForApiResponse: false }));
-      })
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log("Clauses: ", data.clauses);
+      return { success: true, payload: data.clauses };
+    } catch (error) {
+      console.error("Error submitting contract", error);
+      return { success: false, payload: error.message };
+    } finally {
+      setTransactionState(prevState => ({ ...prevState, waitingForApiResponse: false }));
     }
+  }
 
   // Function to create clauses and update state
   async function createClausesWithState(contractId: string, clauses: Clause[]) {
@@ -206,8 +209,9 @@ export default function UploadContractPage() {
   };
 
   const uploadRawText = async (text: string) => {
-    if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' });
-    if (!file && !rawText) return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' });
+    if (!user?.id) {
+      return enqueueSnackbar('User not authenticated', { variant: 'error' });
+    }
     if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
       return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
     }
@@ -262,19 +266,23 @@ export default function UploadContractPage() {
 
 
   const uploadFile = async (file: File) => {
-    if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' });
-    if (!file && !rawText) return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' });
+    if (!user?.id) {
+      return enqueueSnackbar('User not authenticated', { variant: 'error' });
+    }
+    if (!file) {
+      return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' });
+    }
     if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
       return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
     }
     try {
       // **Step 1: Create contract entry in DB**
-     const contract = await createContractWithState({
+      const contract = await createContractWithState({
         userId: user.id,
         fileUrl: file?.name || undefined,
         status: 'pending'
       });
-      
+
       // **Step 2: Submit the file for AI processing**
       const prompt = `Analyze the attached contract and return the result as a JSON array. 
         Each object in the array should represent a clause with:
@@ -321,9 +329,6 @@ export default function UploadContractPage() {
 
   return (
     <PageLayout layout="narrow">
-      {/* {isProcessing && (
-        <Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }} />
-      )} */}
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Title level={2}>Upload Contract for Analysis</Title>
         <Paragraph>Upload a PDF contract file or input raw text to have it analyzed for important clauses.</Paragraph>
@@ -338,7 +343,7 @@ export default function UploadContractPage() {
           </Paragraph>
         )}
 
-        {Object.values(transactionState).some(state => state) && (
+        {isProcessing && (
           <Progress
             percent={calculateProgress()}
             status='active'
