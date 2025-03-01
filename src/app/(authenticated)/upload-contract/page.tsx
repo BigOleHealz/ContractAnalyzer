@@ -4,7 +4,7 @@ import { useUserContext } from '@/core/context'
 import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
-import { Clause } from '@prisma/client'
+import { Clause, Contract } from '@prisma/client'
 import { Button, Input, Space, Typography, Upload, Progress } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
 
-type Contract = {
+type ContractInput = {
   userId: string
   fileUrl: string
   content?: string | null
@@ -124,7 +124,7 @@ export default function UploadContractPage() {
     enqueueSnackbar('File uploaded successfully', { variant: 'success' })
   }
 
-  async function createContractWithState(contract: Contract) {
+  async function createContractWithState(contract: ContractInput) {
     setTransactionState(prevState => ({ ...prevState, creatingContract: true }));
     try {
       const contractInfo = await createContract({ data: contract });

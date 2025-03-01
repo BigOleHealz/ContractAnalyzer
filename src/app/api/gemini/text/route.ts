@@ -8,6 +8,7 @@ const genAI = new GoogleGenerativeAI(geminiApiKey);
 export async function POST(req: NextRequest, res: NextResponse) {
     try {
         const formData = await req.formData();
+        
         const prompt = formData.get('prompt') as string;
 
         if (!prompt) {
