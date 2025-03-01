@@ -5,7 +5,7 @@ import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
 import { Clause } from '@prisma/client'
-import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
+import { Button, Input, Space, Spin, Typography, Upload, Progress } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -23,7 +23,7 @@ export default function UploadContractPage() {
   const router = useRouter()
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
-  const [isProcessing, setIsProcessing] = useState(false)
+  // const [isProcessing, setIsProcessing] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState('')
   const isFreeUsageUsed = user?.freeUsageUsed || false
@@ -109,6 +109,11 @@ export default function UploadContractPage() {
     return parseInt(productSubscription.product.metadata.monthly_uploads) + freeUsage - contractsList.length
   }, [productSubscription, contractsList, isFreeUsageUsed])
 
+  const isProcessing = useMemo(() => {
+    return Object.values(transactionState).every(state => state);
+  }, [transactionState]);
+
+
   const handleFileChange = async (file: File) => {
     setFile(file)
     enqueueSnackbar('File uploaded successfully', { variant: 'success' })
@@ -193,6 +198,12 @@ export default function UploadContractPage() {
       setTransactionState(prevState => ({ ...prevState, updatingUser: false }));
     }
   }
+
+  const calculateProgress = () => {
+    const states = Object.values(transactionState);
+    const activeStates = states.filter(state => state).length;
+    return (activeStates / states.length) * 100;
+  };
 
   const uploadRawText = async (text: string) => {
     if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' });
@@ -310,9 +321,9 @@ export default function UploadContractPage() {
 
   return (
     <PageLayout layout="narrow">
-      {isProcessing && (
+      {/* {isProcessing && (
         <Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }} />
-      )}
+      )} */}
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Title level={2}>Upload Contract for Analysis</Title>
         <Paragraph>Upload a PDF contract file or input raw text to have it analyzed for important clauses.</Paragraph>
@@ -325,6 +336,17 @@ export default function UploadContractPage() {
           <Paragraph className='text-red-500 font-bold'>
             You have used your free usage limit. Please upgrade your plan to continue.
           </Paragraph>
+        )}
+
+        {Object.values(transactionState).some(state => state) && (
+          <Progress
+            percent={calculateProgress()}
+            status='active'
+            strokeColor={{
+              from: '#108ee9',
+              to: '#87d068',
+            }}
+          />
         )}
 
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
