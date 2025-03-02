@@ -124,19 +124,24 @@ export default function UploadContractPage() {
     enqueueSnackbar('File uploaded successfully', { variant: 'success' })
   }
 
-  async function createContractWithState(contract: ContractInput) {
-    setTransactionState(prevState => ({ ...prevState, creatingContract: true }));
+  async function withTransactionState<T>(
+    stateKey: keyof typeof transactionState,
+    asyncOperation: () => Promise<T>
+  ): Promise<T | null> {
+    setTransactionState(prev => ({ ...prev, [stateKey]: true }));
     try {
+      return await asyncOperation();
+    } finally {
+      setTransactionState(prev => ({ ...prev, [stateKey]: false }));
+    } 
+  }
+
+  async function createContractWithState(contract: ContractInput) {
+    return withTransactionState('creatingContract', async () => {
       const contractInfo = await createContract({ data: contract });
       enqueueSnackbar('Contract submitted for analysis', { variant: 'success' });
-      return contractInfo
-    } catch (error) {
-      console.error('Error creating contract:', error)
-      enqueueSnackbar('Error creating contract', { variant: 'error' })
-      return null
-    } finally {
-      setTransactionState(prevState => ({ ...prevState, creatingContract: false }));
-    }
+      return contractInfo;
+    });
   }
 
   async function submitApiRequestWithState(prompt: string, file?: File) {
@@ -172,34 +177,25 @@ export default function UploadContractPage() {
 
   // Function to create clauses and update state
   async function createClausesWithState(contractId: string, clauses: Clause[]) {
-    setTransactionState(prevState => ({ ...prevState, creatingClauses: true }));
-    try {
+    return withTransactionState('creatingClauses', async () => {
       await createManyClauses({
         data: clauses.map((clause: Clause) => ({ ...clause, contractId: contractId }))
       });
-    } finally {
-      setTransactionState(prevState => ({ ...prevState, creatingClauses: false }));
-    }
+    });
   }
 
   // Function to update contract and update state
   async function updateContractWithState(contractId: string) {
-    setTransactionState(prevState => ({ ...prevState, updatingContract: true }));
-    try {
+    return withTransactionState('updatingContract', async () => {
       await updateContract({ where: { id: contractId }, data: { status: 'completed' } });
-    } finally {
-      setTransactionState(prevState => ({ ...prevState, updatingContract: false }));
-    }
+    });
   }
 
   // Function to update user and update state
   async function updateUserWithState(userId: string) {
-    setTransactionState(prevState => ({ ...prevState, updatingUser: true }));
-    try {
+    return withTransactionState('updatingUser', async () => {
       await updateUser({ where: { id: userId }, data: { freeUsageUsed: true } });
-    } finally {
-      setTransactionState(prevState => ({ ...prevState, updatingUser: false }));
-    }
+    });
   }
 
   const calculateProgress = () => {
