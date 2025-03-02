@@ -4,24 +4,36 @@ import { useUserContext } from '@/core/context'
 import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
-import { Clause } from '@prisma/client'
-import { Button, Input, Space, Spin, Typography, Upload } from 'antd'
+import { Clause, Contract } from '@prisma/client'
+import { Button, Input, Space, Typography, Upload, Progress } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
-import { Utility } from '@/core/helpers/utility'
 import { useRouter } from 'next/navigation'
-
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
+
+type ContractInput = {
+  userId: string
+  fileUrl: string
+  content?: string | null
+  status: string
+}
 
 export default function UploadContractPage() {
   const router = useRouter()
   const { user } = useUserContext()
   const { enqueueSnackbar } = useSnackbar()
-  const [isProcessing, setIsProcessing] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState('')
   const isFreeUsageUsed = user?.freeUsageUsed || false
+
+  const [transactionState, setTransactionState] = useState({
+    creatingContract: false,
+    waitingForApiResponse: false,
+    creatingClauses: false,
+    updatingContract: false,
+    updatingUser: false,
+  });
 
   const currentDate = useMemo(() => new Date(), [])
 
@@ -29,7 +41,6 @@ export default function UploadContractPage() {
   const { mutateAsync: updateContract } = Api.contract.update.useMutation()
   const { mutateAsync: createManyClauses } = Api.clause.createMany.useMutation()
   const { mutateAsync: updateUser } = Api.user.update.useMutation()
-  const { mutateAsync: generateText } = Api.ai.generateText.useMutation()
 
   // Fetch active subscriptions
   const { data: subscriptions = [] } = Api.billing.findManySubscriptions.useQuery(
@@ -53,13 +64,17 @@ export default function UploadContractPage() {
 
   // Derive the product with the most monthly uploads
   const productSubscription = useMemo(() => {
-    if (!subscriptions.length || !products.length) return null
+    if (!subscriptions.length || !products.length) {
+      return null
+    }
 
     const subscribedProducts = products.filter(product =>
       subscriptions.some(sub => sub.productId === product.id)
     )
 
-    if (!subscribedProducts.length) return null
+    if (!subscribedProducts.length) {
+      return null
+    }
 
     // Find product with the highest `monthly_uploads`
     const productWithMaxUploads = subscribedProducts.reduce((maxProduct, currentProduct) =>
@@ -92,113 +107,224 @@ export default function UploadContractPage() {
 
   // Compute remaining monthly uploads
   const monthlyUploadsLeft = useMemo(() => {
-    if (!productSubscription) return 0
+    if (!productSubscription) {
+      return 0
+    }
     const freeUsage = isFreeUsageUsed ? 0 : 1
-    return parseInt(productSubscription.product.metadata.monthly_uploads) + freeUsage - contractsList.length
+    return parseInt(productSubscription.product.metadata.monthly_uploads, 10) + freeUsage - contractsList.length
   }, [productSubscription, contractsList, isFreeUsageUsed])
 
+  const isProcessing = useMemo(() => {
+    return Object.values(transactionState).some(state => state);
+  }, [transactionState]);
 
-  const extractTextFromPdf = async (file: File) => {
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/extract-text`, {
-        method: 'POST',
-        body: formData
-      })
-
-      if (!response.ok) throw new Error('Failed to extract text')
-
-      const data = await response.json()
-      return data.text
-    } catch (error) {
-      console.error('Error extracting text from PDF:', error)
-      enqueueSnackbar('Error extracting text from PDF', { variant: 'error' })
-      return null
-    }
-  }
-
-  const analyzeText = async (text: string) => {
-    try {
-      const { analysis } = await generateText({
-        prompt: `Analyze the following contract and return the result as a JSON array. 
-          Each object in the array should represent a clause with the following fields: 
-          - **content**
-          - **isImportant**
-          - **aiAnalysis**
-          
-          Highlight the notable clauses and risks:
-          \`${text}\`.
-
-          Translate the legal jargon into verbiage that a regular person can understand.`
-      })
-
-      return JSON.parse(Utility.removeJsonTags(analysis))
-    } catch (error) {
-      console.error('Error analyzing contract:', error)
-      enqueueSnackbar('Error analyzing contract', { variant: 'error' })
-      return null
-    }
-  }
 
   const handleFileChange = async (file: File) => {
     setFile(file)
     enqueueSnackbar('File uploaded successfully', { variant: 'success' })
   }
 
-  const handleSubmit = async () => {
-    if (!user?.id) return enqueueSnackbar('User not authenticated', { variant: 'error' })
-    if (!file && !rawText) return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' })
-    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
-      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' })
+  async function withTransactionState<T>(
+    stateKey: keyof typeof transactionState,
+    asyncOperation: () => Promise<T>
+  ): Promise<T | null> {
+    setTransactionState(prev => ({ ...prev, [stateKey]: true }));
+    try {
+      return await asyncOperation();
+    } finally {
+      setTransactionState(prev => ({ ...prev, [stateKey]: false }));
+    } 
+  }
+
+  async function createContractWithState(contract: ContractInput) {
+    return withTransactionState('creatingContract', async () => {
+      const contractInfo = await createContract({ data: contract });
+      enqueueSnackbar('Contract submitted for analysis', { variant: 'success' });
+      return contractInfo;
+    });
+  }
+
+  async function submitApiRequestWithState(prompt: string, file?: File) {
+    setTransactionState(prevState => ({ ...prevState, waitingForApiResponse: true }));
+    enqueueSnackbar('Analyzing contract...', { variant: 'info' })
+
+    const formData = new FormData()
+    formData.append('prompt', prompt)
+
+    let apiEndpoint;
+    if (file) {
+      formData.append('file', file)
+      apiEndpoint = '/api/gemini/file'
+    } else {
+      apiEndpoint = '/api/gemini/text'
     }
 
-    setIsProcessing(true)
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log("Clauses: ", data.clauses);
+      return { success: true, payload: data.clauses };
+    } catch (error) {
+      console.error("Error submitting contract", error);
+      return { success: false, payload: error.message };
+    } finally {
+      setTransactionState(prevState => ({ ...prevState, waitingForApiResponse: false }));
+    }
+  }
+
+  // Function to create clauses and update state
+  async function createClausesWithState(contractId: string, clauses: Clause[]) {
+    return withTransactionState('creatingClauses', async () => {
+      await createManyClauses({
+        data: clauses.map((clause: Clause) => ({ ...clause, contractId: contractId }))
+      });
+    });
+  }
+
+  // Function to update contract and update state
+  async function updateContractWithState(contractId: string) {
+    return withTransactionState('updatingContract', async () => {
+      await updateContract({ where: { id: contractId }, data: { status: 'completed' } });
+    });
+  }
+
+  // Function to update user and update state
+  async function updateUserWithState(userId: string) {
+    return withTransactionState('updatingUser', async () => {
+      await updateUser({ where: { id: userId }, data: { freeUsageUsed: true } });
+    });
+  }
+
+  const calculateProgress = () => {
+    const states = Object.values(transactionState);
+    const activeStates = states.filter(state => state).length;
+    return (activeStates / states.length) * 100;
+  };
+
+  const uploadRawText = async (text: string) => {
+    if (!user?.id) {
+      return enqueueSnackbar('User not authenticated', { variant: 'error' });
+    }
+    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
+      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
+    }
 
     try {
-      let contentToAnalyze = rawText
-      if (file) {
-        contentToAnalyze = await extractTextFromPdf(file)
-        if (!contentToAnalyze) throw new Error('Text extraction failed')
+      // **Step 1: Create contract entry in DB**
+      const contract = await createContractWithState({
+        userId: user.id,
+        fileUrl: undefined,
+        content: rawText,
+        status: 'pending'
+      });
+
+      // **Step 2: Submit the contract for AI processing**
+      const prompt = `
+        Analyze the following contract and return the result as a JSON array.
+        
+        Each object in the array should represent a clause with the following fields:
+        - content
+        - isImportant
+        - aiAnalysis
+        
+        Highlight the notable clauses and risks: \`${text}\`.
+      
+        Translate the legal jargon into verbiage that a regular person can understand.
+      `
+      const response = await submitApiRequestWithState(prompt, undefined);
+
+      if (!response.success) {
+        enqueueSnackbar(`Error processing contract with AI: ${response.payload}`, { variant: 'error' })
+        return null
       }
+      const clauses = response.payload
 
-      // Create contract entry in DB
-      const contract = await createContract({
-        data: {
-          userId: user.id,
-          fileUrl: file?.name || undefined,
-          content: contentToAnalyze || undefined,
-          status: 'pending'
-        }
-      })
-      enqueueSnackbar('Contract submitted for analysis', { variant: 'success' })
+      // **Step 3: Create clauses in DB**
+      await createClausesWithState(contract.id, clauses)
 
-      const clauses = await analyzeText(contentToAnalyze)
-      if (!clauses) throw new Error('Analysis failed')
+      // **Step 4: Update contract status in DB**
+      await updateContractWithState(contract.id)
 
-      await createManyClauses({
-        data: clauses.map((clause: Clause) => ({ ...clause, contractId: contract.id }))
-      })
+      // **Step 5: Update user's free usage limit in DB**
+      await updateUserWithState(user.id)
 
-      // Update contract status
-      await updateContract({ where: { id: contract.id }, data: { status: 'completed' } })
-      await updateUser({ where: { id: user.id }, data: { freeUsageUsed: true } })
+      router.push(`/analysis-results?contractId=${contract.id}`);
 
-      router.push(`/analysis-results?contractId=${contract.id}`)
     } catch (error) {
-      console.error('Error submitting contract', error)
-      enqueueSnackbar('Error submitting contract', { variant: 'error' })
-    } finally {
-      setIsProcessing(false)
+      console.error('Error processing contract with AI:', error)
+      enqueueSnackbar('Error processing contract with AI', { variant: 'error' })
+      return null
+    }
+  }
+
+
+  const uploadFile = async (file: File) => {
+    if (!user?.id) {
+      return enqueueSnackbar('User not authenticated', { variant: 'error' });
+    }
+    if (!file) {
+      return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' });
+    }
+    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
+      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
+    }
+    try {
+      // **Step 1: Create contract entry in DB**
+      const contract = await createContractWithState({
+        userId: user.id,
+        fileUrl: file?.name || undefined,
+        status: 'pending'
+      });
+
+      // **Step 2: Submit the file for AI processing**
+      const prompt = `Analyze the attached contract and return the result as a JSON array. 
+        Each object in the array should represent a clause with:
+        - **content**
+        - **isImportant**
+        - **aiAnalysis**
+        
+        Highlight notable clauses and risks.
+        
+        Translate legal jargon into easy-to-understand language.
+      `
+      const response = await submitApiRequestWithState(prompt, file);
+
+      if (!response.success) {
+        enqueueSnackbar(`Error processing contract with AI: ${response.payload}`, { variant: 'error' })
+        return null
+      }
+      const clauses = response.payload
+
+      // **Step 3: Create clauses in DB**
+      await createClausesWithState(contract.id, clauses)
+
+      // **Step 4: Update contract status in DB**
+      await updateContractWithState(contract.id)
+
+      // **Step 5: Update user's free usage limit in DB**
+      await updateUserWithState(user.id)
+
+      router.push(`/analysis-results?contractId=${contract.id}`);
+    } catch (error) {
+      console.error('Error processing file with Gemini:', error)
+      enqueueSnackbar('Error processing contract with AI', { variant: 'error' })
+      return null
+    }
+  }
+
+  function handleContractUpload() {
+    if (file) {
+      uploadFile(file)
+    } else if (rawText) {
+      uploadRawText(rawText)
     }
   }
 
   return (
     <PageLayout layout="narrow">
-      {isProcessing && (
-        <Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }} />
-      )}
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Title level={2}>Upload Contract for Analysis</Title>
         <Paragraph>Upload a PDF contract file or input raw text to have it analyzed for important clauses.</Paragraph>
@@ -211,6 +337,17 @@ export default function UploadContractPage() {
           <Paragraph className='text-red-500 font-bold'>
             You have used your free usage limit. Please upgrade your plan to continue.
           </Paragraph>
+        )}
+
+        {isProcessing && (
+          <Progress
+            percent={calculateProgress()}
+            status='active'
+            strokeColor={{
+              from: '#108ee9',
+              to: '#87d068',
+            }}
+          />
         )}
 
         <Space direction="vertical" size="middle" style={{ width: '100%' }}>
@@ -235,7 +372,12 @@ export default function UploadContractPage() {
             disabled={!!file}
           />
 
-          <Button type="primary" icon={<FileTextOutlined />} onClick={handleSubmit} disabled={!file && !rawText}>
+          <Button
+            type="primary"
+            icon={<FileTextOutlined />}
+            onClick={handleContractUpload}
+            disabled={!file && !rawText}
+          >
             Submit for Analysis
           </Button>
         </Space>
