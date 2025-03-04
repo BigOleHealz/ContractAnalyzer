@@ -1,7 +1,7 @@
 'use client'
 
 import { WorkspaceProvider } from '@/.marblism/workspace'
-import { AnalyticsProvider } from '@/core/analytics'
+import { Analytics as AnalyticsVercel } from '@vercel/analytics/next';
 import { UserProvider } from '@/core/context'
 import { TRPCProvider } from '@/core/trpc'
 import { DesignSystemProvider } from '@/designSystem'
@@ -17,13 +17,14 @@ export function ClientLayout({ children }: Props) {
     <DesignSystemProvider>
       <SessionProvider>
         <TRPCProvider>
-          <AnalyticsProvider>
-            <WorkspaceProvider>
-              <UserProvider>
-                <NotificationProvider>{children}</NotificationProvider>
-              </UserProvider>
-            </WorkspaceProvider>
-          </AnalyticsProvider>
+          <WorkspaceProvider>
+            <UserProvider>
+              <NotificationProvider>
+                {children}
+                <AnalyticsVercel />
+              </NotificationProvider>
+            </UserProvider>
+          </WorkspaceProvider>
         </TRPCProvider>
       </SessionProvider>
     </DesignSystemProvider>

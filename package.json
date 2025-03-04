@@ -41,6 +41,7 @@
     "@trpc/next": "^10.37.1",
     "@trpc/react-query": "^10.37.1",
     "@trpc/server": "^10.37.1",
+    "@vercel/analytics": "^1.5.0",
     "antd": "^5.18.2",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
