@@ -18,10 +18,10 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     const canActivate =
       typeof window !== 'undefined' && !isLoading && data && isProduction
 
-    // console.log("typeof window:", typeof window)
-    // console.log("isLoading:", isLoading)
-    // console.log("data:", data)
-    // console.log("isProduction:", isProduction)
+    console.log("typeof window:", typeof window)
+    console.log("isLoading:", isLoading)
+    console.log("data:", data)
+    console.log("isProduction:", isProduction)
 
     // console.log("canActivate:", canActivate)
     if (canActivate) {
