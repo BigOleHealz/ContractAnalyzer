@@ -107,10 +107,10 @@ export default function UploadContractPage() {
 
   // Compute remaining monthly uploads
   const monthlyUploadsLeft = useMemo(() => {
-    if (!productSubscription) {
-      return 0
-    }
     const freeUsage = isFreeUsageUsed ? 0 : 1
+    if (!productSubscription) {
+      return freeUsage
+    }
     return parseInt(productSubscription.product.metadata.monthly_uploads, 10) + freeUsage - contractsList.length
   }, [productSubscription, contractsList, isFreeUsageUsed])
 
