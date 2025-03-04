@@ -18,9 +18,16 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     const canActivate =
       typeof window !== 'undefined' && !isLoading && data && isProduction
 
+    // console.log("typeof window:", typeof window)
+    // console.log("isLoading:", isLoading)
+    // console.log("data:", data)
+    // console.log("isProduction:", isProduction)
+
+    // console.log("canActivate:", canActivate)
     if (canActivate) {
-      const key = data['PUBLIC_POSTHOG_KEY']
-      const host = data['PUBLIC_POSTHOG_HOST']
+
+      const key = data['SERVER_POSTHOG_KEY']
+      const host = data['SERVER_POSTHOG_HOST']
 
       try {
         posthog.init(key, {
