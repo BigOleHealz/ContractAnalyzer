@@ -1,11 +1,13 @@
+export const maxDuration = 180;
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from 'next/server';
-import { Utility } from '@/core/helpers/utility'
+import { Utility } from '@/core/helpers/utility';
 
 const geminiApiKey = process.env.SERVER_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(geminiApiKey);
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
     try {
         const formData = await req.formData();
 
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const promptPart = {
             text: prompt,
-        }
+        };
 
         const imagePart = {
             inlineData: {
@@ -39,13 +41,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const result = await model.generateContent({
             contents: [{
                 role: "user",
-                parts: [promptPart, imagePart], // Wrap the prompt and imagePart in an array
+                parts: [promptPart, imagePart],
             }],
         });
 
         const response = await result.response;
+        const text = response.text();
+        const textWithoutTags = Utility.removeJsonTags(text);
         try {
-            const clauses = JSON.parse(Utility.removeJsonTags(response.text()));
+            const clauses = JSON.parse(textWithoutTags);
             return NextResponse.json({ clauses }, { status: 200 });
         } catch (parseError) {
             console.error("Error parsing clauses to JSON:", parseError);
