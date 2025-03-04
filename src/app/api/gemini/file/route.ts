@@ -1,4 +1,4 @@
-export const maxDuration = 180;
+export const maxDuration = 60;
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from 'next/server';
