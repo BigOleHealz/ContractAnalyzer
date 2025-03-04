@@ -23,7 +23,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     console.log("data:", data)
     console.log("isProduction:", isProduction)
 
-    // console.log("canActivate:", canActivate)
+    console.log("canActivate:", canActivate)
     if (canActivate) {
 
       const key = data['SERVER_POSTHOG_KEY']
