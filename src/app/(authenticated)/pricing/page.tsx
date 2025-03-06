@@ -29,8 +29,6 @@ export default function PricingPage() {
   // Check if the user is subscribed to a product
   const isSubscribed = (product: Product) => subscriptions.some(sub => sub.productId === product.id)
 
-  const getPrice = (product: Product) => `$${product.price}`
-
   // Handle new subscription
   const handleSubscribe = async (product: Product) => {
     if (isSubscribed(product)) {
@@ -91,11 +89,9 @@ export default function PricingPage() {
 
                 <Flex align="center">
                   <Typography.Title level={1} style={{ margin: 0 }}>
-                    {getPrice(product)}
+                    ${product.price}
                   </Typography.Title>
-                  {product.interval && (
-                    <Typography.Text className="ml-1 text-slate-400" >/ {product.interval}</Typography.Text>
-                  )}
+                  <Typography.Text className="ml-1 text-slate-400" >/ {product.interval}</Typography.Text>
                 </Flex>
 
                 <Typography.Text className="text-muted text-slate-400">{product.description}</Typography.Text>

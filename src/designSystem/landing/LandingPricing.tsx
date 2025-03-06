@@ -1,31 +1,37 @@
-import { CheckCircleFilled } from '@ant-design/icons'
 import { HTMLAttributes } from 'react'
+import { useRouter } from 'next/navigation'
+import { CheckCircleFilled } from '@ant-design/icons'
+import { Card, Col, Flex, Row, Typography } from 'antd'
 import { DesignSystemUtility } from '../helpers/utility'
 import LandingButton from './LandingButton'
 
-type Package = {
-  title: string
-  description: string
-  monthly: number
-  features: string[]
-  className?: string
-  type?: string
-  highlight?: boolean
-}
+import { Api } from '@/core/trpc/internal/trpc.client'
+import { Product } from '@/server/libraries/payment/payment.type'
+import { useUserContext } from '@/core/context'
 
 interface Props extends HTMLAttributes<HTMLElement> {
   title: string
   subtitle: string
-  packages: Package[]
 }
 
 export const LandingPricing: React.FC<Props> = ({
   title,
   subtitle,
-  packages,
   className,
   ...props
 }) => {
+  const { user } = useUserContext()
+  const { data: products = [], isLoading: isLoadingProducts } = Api.billing.findManyProducts.useQuery({}, { initialData: [] })
+  
+  const router = useRouter()
+
+  const handlePricingCardClick = () => { 
+    if (user) {
+      router.push('/pricing')
+    } else {
+      router.push('/login?redirect=/pricing')
+    }
+  }
   return (
     <section
       className={DesignSystemUtility.buildClassNames('py-16 px-5', className)}
@@ -42,8 +48,8 @@ export const LandingPricing: React.FC<Props> = ({
         </div>
 
         <div className="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
-          {packages.map((item, idx) => (
-            <PricingCard key={idx + 'pricingcard'} {...item} />
+          {products.map((product, idx) => (
+            <PricingCard key={idx + 'pricingcard'} product={product} handleClick={handlePricingCardClick} />
           ))}
         </div>
       </div>
@@ -51,55 +57,59 @@ export const LandingPricing: React.FC<Props> = ({
   )
 }
 
-const PricingCard = (props: Package) => {
-  const { title, description, monthly, features, className, type, highlight } =
-    props
+const PricingCard = ({ product, handleClick }: { product: Product, handleClick : () => void }) => {
+  const { id, name, price, interval, description, metadata, coverUrl } = product
+
   return (
-    <div>
-      <div
-        className={`flex flex-col w-full order-first lg:order-none border py-5 px-6 relative rounded-lg ${
-          highlight ? 'border-orange-500 ' : 'border-slate-400 '
-        }`}
-      >
-        <div className="text-center">
-          {highlight && (
-            <span className="inline-flex absolute px-3 py-1 text-xs -top-3 left-1/2 -translate-x-1/2 font-medium rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white ">
+    <Row gutter={[16, 16]} justify="center">
+      <Col key={id} xs={24} sm={24} md={24} lg={24} xl={24} style={{ display: 'flex' }}>
+        <Card className={`flex flex-col w-full order-first lg:order-none border py-5 px-6 relative rounded-lg ${name === 'Pro' ? 'border-orange-500 ' : 'border-slate-400 '
+          }`} hoverable style={{ flex: 1, display: 'flex', flexDirection: 'column' }} onClick={handleClick}>
+          {name === 'Pro' && (
+            <span className="inline-flex absolute px-3 py-1 text-xs -top-3 left-1/2 -translate-x-1/2 font-medium rounded-full bg-orange-500 text-white ">
               Popular
             </span>
           )}
+          <Flex className="product-image-container">
+            <img className="product-image" src={coverUrl} alt={name} />
+          </Flex>
 
-          <h4 className="text-lg font-medium text-slate-600 dark:text-slate-400">
-            {title}
-          </h4>
-          <p className="mt-3 text-4xl font-bold text-black dark:text-white md:text-4xl">
-            <span className="text-sm font-normal">$</span>
-            {monthly}
-            <span className="text-sm font-normal text-slate-600 dark:text-slate-400">
-              /month
-            </span>
-          </p>
-        </div>
-        <ul className="grid mt-8 text-left gap-y-4">
-          {features.map((item, idx) => (
-            <li
-              key={idx + 'pricingfeature'}
-              className="flex items-start gap-3 text-slate-600 dark:text-slate-400"
+          <Flex vertical gap={10} className="flex-1" style={{ marginTop: '1rem' }}>
+            <Flex justify="space-between" align="center" wrap="wrap">
+              <Typography.Title level={3} style={{ margin: 0, color: '#8BA5B6' }}>
+                {name}
+              </Typography.Title>
+            </Flex>
+          </Flex>
+
+          <Flex align="center">
+            <Typography.Title level={1} style={{ margin: 0 }}>
+              ${price}
+            </Typography.Title>
+            <Typography.Text className="ml-1 text-slate-400" >/ {interval}</Typography.Text>
+          </Flex>
+
+          <Typography.Text className="text-muted text-slate-400">{description}</Typography.Text>
+
+          <ul className="feature-list" style={{ marginTop: '0.5rem' }}>
+            {metadata.features.split(',').map((feature, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-slate-400 dark:text-slate-400" style={{ margin: '0.2rem 0.2rem 0 0' }}>
+                <CheckCircleFilled className="w-6 h-6" />
+                <span style={{ textAlign: 'left' }}>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex mt-8">
+            <LandingButton
+              href={'/pricing'}
+              block
+              type={name === 'Pro' ? 'primary' : 'outline'}
             >
-              <CheckCircleFilled className="w-6 h-6" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="flex mt-8">
-          <LandingButton
-            href={'/register'}
-            block
-            type={highlight ? 'primary' : 'outline'}
-          >
-            {'Get Started'}
-          </LandingButton>
-        </div>
-      </div>
-    </div>
+              {'Get Started'}
+            </LandingButton>
+          </div>
+        </Card>
+      </Col>
+    </Row>
   )
 }

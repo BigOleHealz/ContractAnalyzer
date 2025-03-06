@@ -107,45 +107,6 @@ export default function LandingPage() {
     },
   ]
 
-  const packages = [
-    {
-      title: `Basic`,
-      description: `Perfect for individuals and freelancers`,
-      monthly: 9,
-      yearly: 99,
-      features: [
-        `10 contract analyses per month`,
-        `Basic clause highlighting`,
-        `24/7 customer support`,
-      ],
-    },
-    {
-      title: `Pro`,
-      description: `Ideal for small businesses and frequent users`,
-      monthly: 29,
-      yearly: 299,
-      features: [
-        `Unlimited contract analyses`,
-        `Advanced clause interpretation`,
-        `Custom alert settings`,
-        `Priority support`,
-      ],
-      highlight: true,
-    },
-    {
-      title: `Enterprise`,
-      description: `Tailored solutions for large organizations`,
-      monthly: 99,
-      yearly: 999,
-      features: [
-        `Unlimited analyses across teams`,
-        `API access for integration`,
-        `Dedicated account manager`,
-        `Custom AI training`,
-      ],
-    },
-  ]
-
   const questionAnswers = [
     {
       question: `How accurate is the AI in interpreting legal language?`,
@@ -266,7 +227,6 @@ export default function LandingPage() {
         id="pricing"
         title={`Affordable Legal Protection for Everyone`}
         subtitle={`Choose the plan that fits your needs and budget. Start safeguarding your interests today.`}
-        packages={packages}
       />
       <LandingFAQ
         id="faq"
