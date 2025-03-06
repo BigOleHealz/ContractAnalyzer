@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { ClientLayout } from './client.layout'
 
 export const metadata: Metadata = {
-  title: 'Contract Analyzer',
-  description: 'Contract Analyzer',
+  title: 'ContractAnalyzer',
+  description: 'ContractAnalyzer',
 
   generator: 'Marblism',
   manifest: '/manifest.json',
