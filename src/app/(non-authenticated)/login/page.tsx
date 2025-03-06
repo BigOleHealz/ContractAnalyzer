@@ -11,6 +11,7 @@ import GoogleButton from 'react-google-button'
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const redirectUrl = searchParams.get('redirect') || '/upload-contract'
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -45,27 +46,31 @@ export default function LoginPage() {
 
       setProviders(Object.keys(providers))
     } catch {
-      // ignore
+      console.log('error fetching providers')
+      enqueueSnackbar('Error fetching providers', { variant: 'error' })
     }
   }
 
   const handleProviderSignIn = async provider => {
     setLoading(true)
-    await signIn(provider, { callbackUrl: '/upload-contract' })
+    await signIn(provider, { callbackUrl: redirectUrl })
   }
 
   const handleSubmit = async (values: any) => {
     setLoading(true)
-
+  
     try {
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         email: values.email,
         password: values.password,
-        callbackUrl: '/upload-contract',
+        callbackUrl: redirectUrl,
       })
+      if (result?.error) {
+        enqueueSnackbar(`Could not login: ${result.error}`, { variant: 'error' })
+      }
     } catch (error) {
       enqueueSnackbar(`Could not login: ${error.message}`, { variant: 'error' })
-
+    } finally {
       setLoading(false)
     }
   }
