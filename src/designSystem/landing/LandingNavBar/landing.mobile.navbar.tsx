@@ -74,9 +74,6 @@ export const LandingMobileNavbar = ({ navItems }: any) => {
             )}
             {!isLoggedIn && (
               <>
-                <LandingButton href="/register" size="sm">
-                  Sign Up
-                </LandingButton>
                 <LandingButton href="/login" size="sm">
                   Login
                 </LandingButton>

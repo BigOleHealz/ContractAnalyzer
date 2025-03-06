@@ -6,14 +6,12 @@ interface Props extends HTMLAttributes<HTMLElement> {
   title?: string
   subtitle?: string
   buttonText?: string
-  buttonLink?: string
 }
 
 export const LandingCTA: React.FC<Props> = ({
   title,
   subtitle,
   buttonText,
-  buttonLink,
   className,
   ...props
 }) => {
@@ -29,7 +27,7 @@ export const LandingCTA: React.FC<Props> = ({
           </h2>
           <p className="text-slate-400 mt-4 text-lg md:text-xl">{subtitle}</p>
           <div className="flex mt-10">
-            <LandingButton href={buttonLink ?? '/register'} size="lg">
+            <LandingButton href={'/upload-contract'} size="lg">
               {buttonText}
             </LandingButton>
           </div>

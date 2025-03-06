@@ -1,23 +1,20 @@
 'use client'
 
 import { AppHeader } from '@/designSystem/ui/AppHeader'
-import { Button, Flex, Form, Input, Typography } from 'antd'
+import { Flex, Typography } from 'antd'
 import { getProviders, signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import GoogleButton from 'react-google-button'
 
 export default function LoginPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const redirectUrl = searchParams.get('redirect') || '/upload-contract'
 
   const { enqueueSnackbar } = useSnackbar()
 
   const [providers, setProviders] = useState<string[]>([])
-  const [form] = Form.useForm()
-  const [isLoading, setLoading] = useState(false)
 
   const errorKey = searchParams.get('error')
 
@@ -52,27 +49,7 @@ export default function LoginPage() {
   }
 
   const handleProviderSignIn = async provider => {
-    setLoading(true)
     await signIn(provider, { callbackUrl: redirectUrl })
-  }
-
-  const handleSubmit = async (values: any) => {
-    setLoading(true)
-  
-    try {
-      const result = await signIn('credentials', {
-        email: values.email,
-        password: values.password,
-        callbackUrl: redirectUrl,
-      })
-      if (result?.error) {
-        enqueueSnackbar(`Could not login: ${result.error}`, { variant: 'error' })
-      }
-    } catch (error) {
-      enqueueSnackbar(`Could not login: ${error.message}`, { variant: 'error' })
-    } finally {
-      setLoading(false)
-    }
   }
 
   const ProviderButton = ({ provider }) => {
@@ -100,64 +77,8 @@ export default function LoginPage() {
         {errorKey && (
           <Typography.Text type="danger">{errorMessage}</Typography.Text>
         )}
-
-        <Form
-          form={form}
-          onFinish={handleSubmit}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: 'Email is required' }]}
-          >
-            <Input
-              type="email"
-              placeholder="Your email"
-              autoComplete="email"
-              style={{ color: 'white' }}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: 'Password is required' }]}
-          >
-            <Input.Password
-              type="password"
-              placeholder="Your password"
-              autoComplete="current-password"
-              style={{ color: 'white' }}
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Flex justify="end">
-              <Button
-                type="link"
-                onClick={() => router.push('/reset-password')}
-                style={{ padding: 0, margin: 0 }}
-              >
-                Forgot password?
-              </Button>
-            </Flex>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={isLoading}>
-              Sign in
-            </Button>
-          </Form.Item>
-        </Form>
-
         {providers.length > 1 && (
           <>
-            <Flex justify="center">
-              <Typography.Text type="secondary">Or</Typography.Text>
-            </Flex>
-
             <Flex
               gap={'small'}
               justify="center"
@@ -172,17 +93,6 @@ export default function LoginPage() {
             </Flex>
           </>
         )}
-
-        <Button
-          ghost
-          style={{ border: 'none' }}
-          onClick={() => router.push('/register')}
-        >
-          <Flex gap={'small'} justify="center">
-            <Typography.Text type="secondary">No account?</Typography.Text>{' '}
-            <Typography.Text>Sign up</Typography.Text>
-          </Flex>
-        </Button>
       </Flex>
     </Flex>
   )

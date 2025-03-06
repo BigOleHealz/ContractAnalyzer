@@ -238,7 +238,6 @@ export default function LandingPage() {
         title={`Ready to Take Control of Your Contracts?`}
         subtitle={`Join thousands of empowered individuals and businesses. Start analyzing your first contract for free!`}
         buttonText={`Get Started Now`}
-        buttonLink={`/register`}
       />
     </LandingContainer>
   )

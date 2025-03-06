@@ -4,9 +4,7 @@ import { Provider } from './providers/provider'
 import { TemplateBase } from './templates/base'
 import { TemplateComponents } from './templates/components'
 import { TemplateInvitationToOrganization } from './templates/invitationToOrganization'
-import { TemplateResetPassword } from './templates/resetPassword'
 import { TemplateStyle } from './templates/style'
-import { TemplateVerificationCode } from './templates/verificationCode'
 import { TemplateWelcome } from './templates/welcome'
 
 export type EmailTemplateKey = keyof typeof EmailService.templates
@@ -24,8 +22,6 @@ export class Service {
   private provider: Provider
 
   public templates = {
-    resetPassword: TemplateResetPassword,
-    verificationCode: TemplateVerificationCode,
     welcome: TemplateWelcome,
     invitationToOrganization: TemplateInvitationToOrganization,
   }

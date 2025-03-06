@@ -100,29 +100,6 @@ export const AuthenticationRouter = Trpc.createRouter({
       const token = Jwt.sign(payload, secret, { expiresIn: TIME_24_HOURS })
 
       const url = Configuration.getBaseUrl()
-
-      const urlResetPassword = `${url}/reset-password/${token}`
-
-      try {
-        await EmailService.send({
-          templateKey: 'resetPassword',
-          email: user.email,
-          name: user.name ?? user.email,
-          subject: `Reset your password`,
-          variables: {
-            url_password_reset: urlResetPassword,
-          },
-        })
-
-        return { success: true }
-      } catch (error) {
-        console.error(error.message)
-
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Could not send the email',
-        })
-      }
     }),
 
   resetPassword: Trpc.procedurePublic
