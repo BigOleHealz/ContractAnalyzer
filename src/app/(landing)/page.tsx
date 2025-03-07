@@ -230,7 +230,6 @@ export default function LandingPage() {
         title={`Demystify Legal Jargon, Empower Your Decisions`}
         subtitle={`Don't let complex contracts intimidate you. Our AI-powered app simplifies legal language, highlights key clauses, and gives you the confidence to sign or negotiate smarter.`}
         buttonText={`Start Analyzing for Free`}
-        pictureurl={`https://marblism-dashboard-api--production-public.s3.us-west-1.amazonaws.com/lsB8Jc-contractanalyzer-VuOT`}
         socialProof={
           <LandingSocialRating
             avatarItems={avatarItems}
