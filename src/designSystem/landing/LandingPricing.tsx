@@ -58,7 +58,7 @@ const PricingCard = ({ product, handleClick }: { product: Product, handleClick :
   return (
     <Row gutter={[16, 16]} justify="center">
       <Col key={id} xs={24} sm={24} md={24} lg={24} xl={24} style={{ display: 'flex' }}>
-        <Card className={`flex flex-col w-full order-first lg:order-none border py-5 px-6 relative rounded-lg ${name === 'Pro' ? 'border-orange-500 ' : 'border-slate-400 '
+        <Card className={`flex flex-col w-full order-first lg:order-none border relative rounded-lg ${name === 'Pro' ? 'border-orange-500 ' : 'border-slate-400 '
           }`} hoverable style={{ flex: 1, display: 'flex', flexDirection: 'column' }} onClick={handleClick}>
           {name === 'Pro' && (
             <span className="inline-flex absolute px-3 py-1 text-xs -top-3 left-1/2 -translate-x-1/2 font-medium rounded-full bg-orange-500 text-white ">
@@ -66,7 +66,7 @@ const PricingCard = ({ product, handleClick }: { product: Product, handleClick :
             </span>
           )}
           <Flex className="product-image-container">
-            <img className="product-image" src={coverUrl} alt={name} />
+            <img className="product-image rounded-lg" src={coverUrl} alt={name} />
           </Flex>
 
           <Flex vertical gap={10} className="flex-1" style={{ marginTop: '1rem' }}>
