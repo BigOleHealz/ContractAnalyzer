@@ -219,7 +219,8 @@ export default function UploadContractPage() {
         fileUrl: undefined,
         content: rawText,
         status: 'pending'
-      });
+      }); //
+
 
       // **Step 2: Submit the contract for AI processing**
       const prompt = `
