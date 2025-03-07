@@ -2,13 +2,27 @@ import { Metadata } from 'next'
 import { ClientLayout } from './client.layout'
 
 export const metadata: Metadata = {
-  title: 'ContractAnalyzer',
-  description: 'ContractAnalyzer',
+  title: 'Contract Analyzer',
+  description: 'AI-Powered Contract Analysis',
 
   generator: 'Marblism',
   manifest: '/manifest.json',
   keywords: ['marblism', 'next14', 'pwa', 'next-pwa'],
   authors: [],
+  openGraph: {
+    title: 'Contract Analyzer',
+    description: 'AI-Powered Contract Analysis',
+    url: process.env.NEXTAUTH_URL,
+    images: [
+      {
+        url: `/pwa/landing_hero_image.png`,
+        width: 800,
+        height: 600,
+        alt: 'Landing Page Image Alt Text',
+      },
+    ],
+    siteName: 'Contract Analyzer',
+  },
   icons: {
     icon: '/pwa/icon.png',
     apple: '/pwa/icon.png',
