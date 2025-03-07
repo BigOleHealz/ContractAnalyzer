@@ -5,10 +5,16 @@
   "type": "module",
   "scripts": {
     "init": "pnpm install && pnpm run docker:init ; pnpm run env:init ; pnpm run global:sync ; pnpm run database:seed",
-    "dev": "next dev -p 3000",
-    "debug": "NODE_OPTIONS='--inspect' next dev -p 3000",
-    "build": "pnpm run crud:sync && next build",
-    "start": "next start -p 3000",
+    
+    "dev": "NODE_ENV=development next dev -p 3000",
+    "debug": "NODE_OPTIONS='--inspect' NODE_ENV=development next dev -p 3000",
+
+    "pre": "NODE_ENV=preview next dev -p 3000",
+
+    "prod": "NODE_ENV=production next start -p 3000",
+    "build": "NODE_ENV=production pnpm run crud:sync && next build",
+    "start": "NODE_ENV=production next start -p 3000",
+    
     "lint": "next lint",
     "check": "tsc ; eslint . --ext .js,.jsx,.ts,.tsx ; pnpm zenstack check",
     "global:sync": "pnpm run crud:sync && pnpm run database:sync:dev",
@@ -20,7 +26,7 @@
     "database:migration:run": "prisma migrate deploy",
     "database:reset": "prisma db push --force-reset && pnpm run database:seed",
     "database:studio": "prisma studio",
-    "docker:init": "docker compose -p marblism-app up -d",
+    "docker:init": "docker compose -p contract-analyzer-app up -d",
     "env:init": "node scripts/env.js",
     "format": "pnpm run format:code && pnpm run format:models",
     "format:code": "prettier --write \"src/!(*.marblism)/**/*.{ts,tsx}\"",
