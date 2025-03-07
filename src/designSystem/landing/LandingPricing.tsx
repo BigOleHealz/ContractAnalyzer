@@ -7,7 +7,6 @@ import LandingButton from './LandingButton'
 
 import { Api } from '@/core/trpc/internal/trpc.client'
 import { Product } from '@/server/libraries/payment/payment.type'
-import { useUserContext } from '@/core/context'
 
 interface Props extends HTMLAttributes<HTMLElement> {
   title: string
@@ -20,18 +19,14 @@ export const LandingPricing: React.FC<Props> = ({
   className,
   ...props
 }) => {
-  const { user } = useUserContext()
-  const { data: products = [], isLoading: isLoadingProducts } = Api.billing.findManyProducts.useQuery({}, { initialData: [] })
-  
   const router = useRouter()
 
-  const handlePricingCardClick = () => { 
-    if (user) {
-      router.push('/pricing')
-    } else {
-      router.push('/login?redirect=/pricing')
-    }
+  const { data: products = [], isLoading: isLoadingProducts } = Api.billing.findManyProducts.useQuery({}, { initialData: [] })
+
+  const handlePricingCardClick = () => {
+    router.push('/pricing')
   }
+
   return (
     <section
       className={DesignSystemUtility.buildClassNames('py-16 px-5', className)}
