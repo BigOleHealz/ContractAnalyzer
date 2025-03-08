@@ -9,7 +9,7 @@
   "scope": "/",
   "icons": [
     {
-      "src": "pwa/icon.png",
+      "src": "https://marblism-dashboard-api--production-public.s3.us-west-1.amazonaws.com/lsB8Jc-contractanalyzer-qI9e",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"

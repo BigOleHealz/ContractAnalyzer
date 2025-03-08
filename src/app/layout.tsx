@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     siteName: 'Contract Analyzer',
   },
   icons: {
-    icon: '/pwa/icon.png',
-    apple: '/pwa/icon.png',
+    icon: '/logo.png',
+    apple: '/logo.png',
     other: [
       {
         rel: 'apple-touch-startup-image',
