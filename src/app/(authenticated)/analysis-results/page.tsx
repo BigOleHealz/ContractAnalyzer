@@ -25,7 +25,11 @@ export default function AnalysisResultsPage() {
 
   const { data: contract, isLoading } = Api.contract.findUnique.useQuery({
     where: { id: contractId },
-    include: { clauses: { include: { contract: true } } },
+    include: {
+      clauses: {
+        include: { contract: true },
+      },
+    },
   })
 
   if (isLoading) {
@@ -105,10 +109,10 @@ export default function AnalysisResultsPage() {
                 </Space>
               }
             >
-              <Button 
-                type="text" 
-                icon={<CloseOutlined />} 
-                onClick={() => setSelectedClause(null)} 
+              <Button
+                type="text"
+                icon={<CloseOutlined />}
+                onClick={() => setSelectedClause(null)}
                 style={{ position: 'absolute', top: 10, right: 10 }}
               />
               <Paragraph>{selectedClause.content}</Paragraph>
