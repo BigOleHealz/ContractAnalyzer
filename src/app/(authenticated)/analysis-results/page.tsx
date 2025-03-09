@@ -3,12 +3,13 @@
 import { useUserContext } from '@/core/context'
 import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
-import { InfoCircleOutlined, WarningOutlined } from '@ant-design/icons'
+import { CloseOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons'
 import { Prisma } from '@prisma/client'
-import { Card, Space, Spin, Tooltip, Typography } from 'antd'
+import { Button, Card, Space, Spin, Tooltip, Typography } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 const { Title, Text, Paragraph } = Typography
 
 export default function AnalysisResultsPage() {
@@ -76,23 +77,48 @@ export default function AnalysisResultsPage() {
             </Paragraph>
           ))}
         </Card>
-
-        {selectedClause && (
-          <Card
-            title={
-              <Space>
-                <InfoCircleOutlined />
-                <Text strong>Clause Analysis</Text>
-              </Space>
-            }
-          >
-            <Paragraph>{selectedClause.content}</Paragraph>
-            <Paragraph>
-              <Text strong>AI Analysis:</Text> {selectedClause.aiAnalysis}
-            </Paragraph>
-          </Card>
-        )}
       </Space>
+
+      <AnimatePresence>
+        {selectedClause && (
+          <motion.div
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              height: '100vh',
+              width: '350px',
+              boxShadow: '-2px 0 10px rgba(0, 0, 0, 0.1)',
+              padding: '20px',
+              overflowY: 'auto',
+            }}
+          >
+            <Card
+              title={
+                <Space>
+                  <InfoCircleOutlined />
+                  <Text strong>Clause Analysis</Text>
+                </Space>
+              }
+            >
+              <Button 
+                type="text" 
+                icon={<CloseOutlined />} 
+                onClick={() => setSelectedClause(null)} 
+                style={{ position: 'absolute', top: 10, right: 10 }}
+              />
+              <Paragraph>{selectedClause.content}</Paragraph>
+              <Paragraph>
+                <Text strong>AI Analysis:</Text> {selectedClause.aiAnalysis}
+              </Paragraph>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageLayout>
   )
 }
