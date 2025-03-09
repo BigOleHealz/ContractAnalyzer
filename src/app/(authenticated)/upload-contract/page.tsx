@@ -165,6 +165,7 @@ export default function UploadContractPage() {
         body: formData,
       });
       const data = await response.json();
+      console.log("Data: ", data);
       console.log("Clauses: ", data.clauses);
       return { success: true, payload: data.clauses };
     } catch (error) {
@@ -282,15 +283,20 @@ export default function UploadContractPage() {
       // **Step 2: Submit the file for AI processing**
       const prompt = `Analyze the attached contract and return the result as a JSON array. 
         Each object in the array should represent a clause with:
+        - **pageNumber**
         - **content**
         - **isImportant**
         - **aiAnalysis**
         
         Highlight notable clauses and risks.
+
+        Keep the clauses to a maximum of 3 sentences each.
         
         Translate legal jargon into easy-to-understand language.
       `
       const response = await submitApiRequestWithState(prompt, file);
+
+      console.log("Response: ", response);
 
       if (!response.success) {
         enqueueSnackbar(`Error processing contract with AI: ${response.payload}`, { variant: 'error' })

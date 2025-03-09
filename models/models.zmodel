@@ -20,7 +20,7 @@ model Clause {
     content      String?          
     isImportant  Boolean?        
     aiAnalysis  String?          
-
+    pageNumber  Int?
     contractId  String          
     contract    Contract?    @relation(fields: [contractId], references: [id], name:"contract")  
  
