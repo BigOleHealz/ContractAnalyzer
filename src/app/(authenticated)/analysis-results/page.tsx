@@ -94,7 +94,6 @@ export default function AnalysisResultsPage() {
               position: 'fixed',
               top: 0,
               right: 0,
-              height: '100vh',
               width: '350px',
               boxShadow: '-2px 0 10px rgba(0, 0, 0, 0.1)',
               padding: '20px',
