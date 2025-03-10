@@ -166,7 +166,6 @@ export default function UploadContractPage() {
       });
       const data = await response.json();
       console.log("Data: ", data);
-      console.log("Clauses: ", data.clauses);
       return { success: true, payload: data.clauses };
     } catch (error) {
       console.error("Error submitting contract", error);

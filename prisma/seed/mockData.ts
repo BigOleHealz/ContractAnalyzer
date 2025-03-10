@@ -32,7 +32,6 @@ INSERT INTO "PushNotification" ("id", "endpoint", "subscription", "userId") VALU
 INSERT INTO "PushNotification" ("id", "endpoint", "subscription", "userId") VALUES ('dac734be-433f-4540-8f16-6855779b2c94', 'httpsexample.comnotify3', 'tier1_test', '4321a8db-76f2-491b-aea3-3dd3636dbe1b');
 
 
-
 INSERT INTO "Contract" ("id", "content", "fileUrl", "status", "userId") VALUES ('9f43be28-6414-46b8-836e-e922296207e0', 'The Contractor agrees to perform the services described in Exhibit A...', 'https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf?id=122', 'approved', '37a277a4-ca6a-44e4-856d-d658166590fe');
 INSERT INTO "Contract" ("id", "content", "fileUrl", "status", "userId") VALUES ('63a14c56-64e8-4062-bf18-3b986aa2ae8d', 'The Tenant shall pay the Landlord the monthly rent of...', 'https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf?id=126', 'pending', '21a857f1-ba5f-4435-bcf6-f910ec07c0dc');
 INSERT INTO "Contract" ("id", "content", "fileUrl", "status", "userId") VALUES ('a04749a6-07ff-4cd4-b2f1-c1a9a636ec0e', 'The Tenant shall pay the Landlord the monthly rent of...', 'https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf?id=130', 'approved', '05b8779c-0288-4558-86b8-2c4249f903c2');
@@ -55,24 +54,6 @@ INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId"
 INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId") VALUES ('eecf2e5e-1122-4331-96f6-6f542b35af99', 'The service provider reserves the right to terminate the agreement with 30 days notice.', false, 'The service providers right to terminate could leave the client without services unexpectedly.', '1e764485-27c4-4942-9889-b617c33fc992');
 INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId") VALUES ('bf1f4c65-434f-4996-af07-a0270a2257f1', 'The lessee agrees to maintain the property in good condition and repair any damages caused during the lease period.', false, 'The noncompete clause could limit the employees future job opportunities.', '94af9c1f-9dae-4f79-8c57-730e847c1574');
 INSERT INTO "Clause" ("id", "content", "isImportant", "aiAnalysis", "contractId") VALUES ('ac826e92-f9e6-4c5e-8b32-36a356decdf6', 'The service provider reserves the right to terminate the agreement with 30 days notice.', false, 'The as is condition means the purchaser has no recourse if the product is defective.', 'ef3d21af-4b03-4c45-b3d6-bd9da0963352');
-
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier1_test', 'Basic', 'Perfect for individuals and freelancers', 10, 'prod_Rl77IUC2DgKz58', ARRAY['10 contract analyses per month', 'Basic clause highlighting', '24/7 customer support']);
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier2_test', 'Pro', 'Ideal for small businesses and frequent users', 30, 'prod_Rl6KP5JJEqtt85', ARRAY['30 contract analyses per month', 'Advanced clause interpretation', 'Custom alert settings', 'Priority support']);
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier3_test', 'Enterprise', 'Tailored solutions for large organizations', 100, 'prod_Rl6L6tIAhw7Mcv', ARRAY['100 contract analyses per month', 'API access for integration', 'Dedicated account manager', 'Custom AI training']);
-
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier1_live', 'Basic', 'Perfect for individuals and freelancers', 10, 'prod_RkyifT9neHbBxw', ARRAY['10 contract analyses per month', 'Basic clause highlighting', '24/7 customer support']);
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier2_live', 'Pro', 'Ideal for small businesses and frequent users', 30, 'prod_Rl17aczoCxhe0r', ARRAY['30 contract analyses per month', 'Advanced clause interpretation', 'Custom alert settings', 'Priority support']);
-INSERT INTO "SubscriptionTier" ("id", "title", "description", "contractsMonthyly", "stripeProductId", "features") VALUES ('tier3_live', 'Enterprise', 'Tailored solutions for large organizations', 100, 'prod_Rl1rZPOzih1Ypp', ARRAY['100 contract analyses per month', 'API access for integration', 'Dedicated account manager', 'Custom AI training']);
-
-
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier1_test', false, '2023-01-01T00:00:00.000Z', '2023-02-28T23:59:59.999Z');
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('4d5e6f7g-8h9i-0j1k-2l3m-4n5o6p7q8r9s', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier3_test', false, '2023-04-01T00:00:00.000Z', '2023-05-31T23:59:59.999Z');
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('7g8h9i0j-1k2l-3m4n-5o6p-7q8r9s0t1u2v', '60f36a2e-d343-4b4f-898f-deaaf5c15856', 'tier2_test', true, '2023-07-01T00:00:00.000Z', NULL);
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier1_test', false, '2023-03-01T00:00:00.000Z', '2023-05-31T23:59:59.999Z');
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p348f', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier2_test', false, '2023-06-01T00:00:00.000Z', '2023-06-30T23:59:59.999Z');
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('6f7g8h9i-0j1k-2l3m-4n5o-6p7q8r9s0t1u', '37a277a4-ca6a-44e4-856d-d658166590fe', 'tier3_test', true, '2023-08-01T00:00:00.000Z', NULL);
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q', '3253987a-2e58-47df-a16e-00f4c154184f', 'tier2_test', false, '2023-02-01T00:00:00.000Z', '2023-07-30T23:59:59.999Z');
-INSERT INTO "Subscription" ("id", "userId", "plan", "isActive", "startDate", "endDate") VALUES ('8h9i0j1k-2l3m-4n5o-6p7q-8r9s0t1u2v3w', '3253987a-2e58-47df-a16e-00f4c154184f', 'tier3_test', true, '2023-08-01T00:00:00.000Z', NULL);
 
   `
 
