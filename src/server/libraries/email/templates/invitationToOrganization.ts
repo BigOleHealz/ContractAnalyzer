@@ -1,6 +1,6 @@
 export const TemplateInvitationToOrganization = `
 <Card.Header>
-  <h2>Welcome to ContractAnalyzer</h2>
+  <h2>Welcome to Legal Larry AI</h2>
   <hr />
 </Card.Header>
 
@@ -12,6 +12,6 @@ export const TemplateInvitationToOrganization = `
 </Card.Body>
 
 <Card.Footer>
-  <p>Sent by ContractAnalyzer</p>
+  <p>Sent by Legal Larry AI</p>
 </Card.Footer>
   `.trim()

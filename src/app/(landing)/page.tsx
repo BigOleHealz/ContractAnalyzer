@@ -57,7 +57,7 @@ export default function LandingPage() {
     {
       name: `Sarah Johnson`,
       designation: `Freelance Graphic Designer`,
-      content: `Contract Clarity App has been a game-changer for my freelance business. I used to spend hours deciphering client contracts, often missing important details. Now, I feel confident and protected with every agreement I sign.`,
+      content: `Legal Larry AI has been a game-changer for my freelance business. I used to spend hours deciphering client contracts, often missing important details. Now, I feel confident and protected with every agreement I sign.`,
       avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
     },
     {
@@ -69,7 +69,7 @@ export default function LandingPage() {
     {
       name: `Emily Rodriguez`,
       designation: `Recent College Graduate`,
-      content: `When I got my first job offer, the contract was overwhelming. Contract Clarity App helped me understand my rights and even negotiate better terms. I'm so glad I found this before signing!`,
+      content: `When I got my first job offer, the contract was overwhelming. Legal Larry AI helped me understand my rights and even negotiate better terms. I'm so glad I found this before signing!`,
       avatar: 'https://randomuser.me/api/portraits/women/27.jpg',
     },
     {
@@ -81,13 +81,13 @@ export default function LandingPage() {
     {
       name: `Lisa Patel`,
       designation: `Tech Startup Founder`,
-      content: `As a startup founder, I've signed countless agreements with investors and partners. Contract Clarity App has been invaluable in helping me navigate complex terms and avoid potential pitfalls.`,
+      content: `As a startup founder, I've signed countless agreements with investors and partners. Legal Larry AI has been invaluable in helping me navigate complex terms and avoid potential pitfalls.`,
       avatar: 'https://randomuser.me/api/portraits/women/52.jpg',
     },
     {
       name: `John Doe`,
       designation: `Consumer Rights Advocate`,
-      content: `I've recommended Contract Clarity App to countless individuals. It's empowering to see people take control of their legal agreements and make informed decisions. This is the future of consumer protection.`,
+      content: `I've recommended Legal Larry AI to countless individuals. It's empowering to see people take control of their legal agreements and make informed decisions. This is the future of consumer protection.`,
       avatar: 'https://randomuser.me/api/portraits/men/17.jpg',
     },
   ]
@@ -220,7 +220,7 @@ export default function LandingPage() {
       />
       <LandingTestimonials
         title={`Real People, Real Protection`}
-        subtitle={`See how Contract Clarity App is changing the way people approach legal agreements.`}
+        subtitle={`See how Legal Larry AI is changing the way people approach legal agreements.`}
         testimonials={testimonials}
       />
       <LandingPricing
@@ -231,7 +231,7 @@ export default function LandingPage() {
       <LandingFAQ
         id="faq"
         title={`Got Questions? We've Got Answers`}
-        subtitle={`Learn more about how Contract Clarity App can protect you and your business.`}
+        subtitle={`Learn more about how Legal Larry AI can protect you and your business.`}
         questionAnswers={questionAnswers}
       />
       <LandingCTA

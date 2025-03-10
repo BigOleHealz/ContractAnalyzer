@@ -5,10 +5,12 @@ import { Api } from '@/core/trpc'
 import { PageLayout } from '@/designSystem'
 import { FileTextOutlined, UploadOutlined } from '@ant-design/icons'
 import { Clause, Contract } from '@prisma/client'
-import { Button, Input, Space, Typography, Upload, Progress } from 'antd'
+import { Button, Input, Modal, Space, Typography, Upload, Progress } from 'antd'
 import { useSnackbar } from 'notistack'
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
 const { Title, Paragraph } = Typography
 const { TextArea } = Input
 
@@ -25,6 +27,7 @@ export default function UploadContractPage() {
   const { enqueueSnackbar } = useSnackbar()
   const [file, setFile] = useState<File | null>(null)
   const [rawText, setRawText] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const isFreeUsageUsed = user?.freeUsageUsed || false
 
   const [transactionState, setTransactionState] = useState({
@@ -120,8 +123,14 @@ export default function UploadContractPage() {
 
 
   const handleFileChange = async (file: File) => {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > MAX_FILE_SIZE) {
+      enqueueSnackbar('File size must be less than 5MB', { variant: 'error' });
+      return false;
+    }
     setFile(file)
     enqueueSnackbar('File uploaded successfully', { variant: 'success' })
+    return true;
   }
 
   async function withTransactionState<T>(
@@ -205,13 +214,6 @@ export default function UploadContractPage() {
   };
 
   const uploadRawText = async (text: string) => {
-    if (!user?.id) {
-      return enqueueSnackbar('User not authenticated', { variant: 'error' });
-    }
-    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
-      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
-    }
-
     try {
       // **Step 1: Create contract entry in DB**
       const contract = await createContractWithState({
@@ -260,17 +262,7 @@ export default function UploadContractPage() {
     }
   }
 
-
   const uploadFile = async (file: File) => {
-    if (!user?.id) {
-      return enqueueSnackbar('User not authenticated', { variant: 'error' });
-    }
-    if (!file) {
-      return enqueueSnackbar('Please upload a file or enter text', { variant: 'error' });
-    }
-    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
-      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
-    }
     try {
       // **Step 1: Create contract entry in DB**
       const contract = await createContractWithState({
@@ -282,7 +274,6 @@ export default function UploadContractPage() {
       // **Step 2: Submit the file for AI processing**
       const prompt = `Analyze the attached contract and return the result as a JSON array. 
         Each object in the array should represent a clause with:
-        - **pageNumber**
         - **content**
         - **isImportant**
         - **aiAnalysis**
@@ -320,13 +311,31 @@ export default function UploadContractPage() {
     }
   }
 
+  const handleModalOk = () => {
+    setIsModalVisible(false)
+  }
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false)
+  }
+
+
   function handleContractUpload() {
+    if (!user?.id) {
+      return enqueueSnackbar('User not authenticated', { variant: 'error' });
+    }
+    if (monthlyUploadsLeft <= 0 && user?.globalRole !== 'ADMIN') {
+      setIsModalVisible(true)
+      return enqueueSnackbar('You have used your monthly usage limit. Upgrade your plan.', { variant: 'error' });
+    }
+
     if (file) {
       uploadFile(file)
     } else if (rawText) {
       uploadRawText(rawText)
     }
   }
+
 
   return (
     <PageLayout layout="narrow">
@@ -387,6 +396,31 @@ export default function UploadContractPage() {
           </Button>
         </Space>
       </Space>
+      <Modal
+        title="Subscription Required"
+        open={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        width={500}
+        centered
+        footer={[
+          <Button key="cancel" onClick={handleModalCancel}>
+            Cancel
+          </Button>,
+          <Button key="upgrade" type="primary" href="/pricing">
+            Upgrade Plan
+          </Button>
+        ]}
+      >
+        <Space direction="vertical" size="middle">
+          <Typography.Title level={5} style={{ margin: '1rem 0 0 0' }}>
+            You've reached your monthly limit
+          </Typography.Title>
+          <Paragraph style={{ margin: 0 }}>
+          <Link href="/pricing">Upgrade your plan</Link> to analyze more contracts and unlock additional features.
+          </Paragraph>
+        </Space>
+      </Modal>
     </PageLayout>
   )
 }
