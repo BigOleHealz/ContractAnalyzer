@@ -62,4 +62,5 @@ yarn-error.log*
 certificates
 
 
-pdf-service/.venv*
+public/pwa/contract_analyzer_logo-removebg-preview.png
+public/pwa/contract_analyzer_logo.png

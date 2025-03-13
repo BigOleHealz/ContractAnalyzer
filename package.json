@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "init": "pnpm install && pnpm run docker:init ; pnpm run env:init ; pnpm run global:sync ; pnpm run database:seed",
+    "init": "pnpm install && pnpm run env:init ; pnpm run global:sync ; pnpm run database:seed",
     "dev": "NODE_ENV=development next dev -p 3000",
     "debug": "NODE_OPTIONS='--inspect' NODE_ENV=development next dev -p 3000",
     "pre": "NODE_ENV=preview next dev -p 3000",
@@ -103,6 +103,7 @@
     "@zenstackhq/trpc": "2.5.0",
     "babel-loader": "^9.2.1",
     "concurrently": "^8.2.2",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.20.0",
     "eslint-config-next": "^14.2.14",
     "nodemon": "^3.1.3",
