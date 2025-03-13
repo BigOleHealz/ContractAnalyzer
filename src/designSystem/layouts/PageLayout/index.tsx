@@ -19,14 +19,6 @@ const getLayoutBreakpoints = (layout: LayoutType) => {
       xl: { span: 24 },
       xxl: { span: 24 },
     },
-    'mid-narrow': {
-      xs: { span: 24 },
-      sm: { span: 24 },
-      md: { span: 24 },
-      lg: { span: 22 },
-      xl: { span: 20 },
-      xxl: { span: 18 },
-    },
     narrow: {
       xs: { span: 24 },
       sm: { span: 24 },

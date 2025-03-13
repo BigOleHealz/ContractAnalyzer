@@ -13,8 +13,6 @@ import { useMemo } from 'react'
 export default function PricingPage() {
   const { user } = useUserContext()
 
-  
-
   const currentDate = useMemo(() => new Date(), [])
 
   const { data: products = [], isLoading: isLoadingProducts } = Api.billing.findManyProducts.useQuery({}, { initialData: [] })
@@ -62,7 +60,7 @@ export default function PricingPage() {
   }
 
   return (
-    <PageLayout isCentered layout="mid-narrow">
+    <PageLayout isCentered layout="narrow">
       <Row gutter={[16, 16]} justify="center">
         {isLoadingProducts ? <Spin /> : products.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No products found on Stripe" />
